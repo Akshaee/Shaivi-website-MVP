@@ -1,0 +1,49 @@
+---
+import RibbonLabel from "./RibbonLabel.astro";
+
+interface Props {
+  id: string;
+  heading: string;
+  ribbon?: string;
+  eyebrow?: string;
+  intro?: string;
+  gradient?: boolean;
+  onDark?: boolean;
+  align?: "start" | "center";
+  class?: string;
+}
+
+const {
+  id,
+  heading,
+  ribbon,
+  eyebrow,
+  intro,
+  gradient = false,
+  onDark = false,
+  align = "start",
+  class: className = "",
+} = Astro.props;
+
+const headingClass = onDark ? "text-white" : gradient ? "text-gradient" : "text-brand-plum";
+const introClass = onDark ? "text-royal-100" : "text-text-muted";
+---
+
+<div class={`${align === "center" ? "text-center" : ""} ${className}`}>
+  {ribbon && <RibbonLabel text={ribbon} class={align === "center" ? "justify-center" : ""} />}
+  {
+    eyebrow && (
+      <p
+        class={`font-accent text-sm font-semibold uppercase tracking-eyebrow ${onDark ? "text-royal-200" : "text-brand-magenta"}`}
+      >
+        {eyebrow}
+      </p>
+    )
+  }
+  <h2 id={id} class={`mt-3 text-3xl ${headingClass}`}>{heading}</h2>
+  {
+    intro && (
+      <p class={`mt-4 prose-measure text-lg ${introClass} ${align === "center" ? "mx-auto" : ""}`}>{intro}</p>
+    )
+  }
+</div>

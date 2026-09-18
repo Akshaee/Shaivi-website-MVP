@@ -1,0 +1,320 @@
+@import "tailwindcss";
+
+@theme {
+  --color-*: initial; /* brand palette only: no stray Tailwind colours */
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  /* Core brand colours, measured from the brochure */
+  --color-brand-red: #d13d23;        /* logo mark ONLY */
+  --color-brand-purple: #643c8e;     /* primary buttons; bridge gradient start */
+  --color-brand-cerulean: #478cb9;   /* bridge gradient end; decorative or large text only */
+  --color-brand-indigo: #34419a;     /* dusk gradient start; links; focus ring */
+  --color-brand-orchid: #9460b8;     /* dusk gradient end; decorative */
+  --color-brand-violet: #6649ae;     /* section panels (leadership, gowns header) */
+  --color-brand-magenta: #a1388b;    /* ribbon labels; orb; heading gradient end */
+  --color-brand-plum: #70206a;       /* the "Elevating" script; H2/H3 on white */
+  --color-brand-deep: #491568;       /* ISO badge; footer background */
+  --color-brand-ink-indigo: #35306a; /* company name; hero headline line */
+  --color-brand-charcoal: #383332;   /* wordmark */
+  --color-ink: #24201d;              /* body text */
+
+  /* Tint scales derived in OKLCH from the core hues */
+  --color-royal-50: #f9f5ff; --color-royal-100: #efeaf6; --color-royal-200: #ded7e9; --color-royal-300: #c4b7d7;
+  --color-royal-400: #a894c3; --color-royal-500: #8d71af; --color-royal-600: #77569e; --color-royal-700: #633b8c;
+  --color-royal-800: #492c68; --color-royal-900: #311e46; --color-royal-950: #20142e;
+
+  --color-cerulean-50: #f0f8fe; --color-cerulean-100: #e5eef5; --color-cerulean-200: #cbdeec; --color-cerulean-300: #a1c3db;
+  --color-cerulean-400: #72a5c9; --color-cerulean-500: #4588b3; --color-cerulean-600: #396f92; --color-cerulean-700: #2d5773;
+  --color-cerulean-800: #224155; --color-cerulean-900: #172b39; --color-cerulean-950: #0f1c25;
+
+  --color-indigo-50: #f4f6ff; --color-indigo-100: #e9ecf9; --color-indigo-200: #d4daee; --color-indigo-300: #b2bcdf;
+  --color-indigo-400: #8e9cce; --color-indigo-500: #6c7cbc; --color-indigo-600: #5262ad; --color-indigo-700: #3a489e;
+  --color-indigo-800: #29347b; --color-indigo-900: #1b2352; --color-indigo-950: #111736;
+
+  --color-orchid-50: #faf4ff; --color-orchid-100: #f1eaf6; --color-orchid-200: #e2d4ed; --color-orchid-300: #cbb2df;
+  --color-orchid-400: #b28dcd; --color-orchid-500: #9967bb; --color-orchid-600: #7e529d; --color-orchid-700: #63417c;
+  --color-orchid-800: #4a305c; --color-orchid-900: #31203d; --color-orchid-950: #201528;
+
+  --color-violet-50: #f7f5ff; --color-violet-100: #edebf9; --color-violet-200: #dbd7ef; --color-violet-300: #bfb7e2;
+  --color-violet-400: #a094d2; --color-violet-500: #8471c1; --color-violet-600: #6e54b4; --color-violet-700: #573f95;
+  --color-violet-800: #412f6f; --color-violet-900: #2b204a; --color-violet-950: #1c1531;
+
+  --color-magenta-50: #fff3fb; --color-magenta-100: #f6e8f2; --color-magenta-200: #ecd2e4; --color-magenta-300: #dcadce;
+  --color-magenta-400: #c885b6; --color-magenta-500: #b35c9e; --color-magenta-600: #a1398b; --color-magenta-700: #7f2d6e;
+  --color-magenta-800: #5e2251; --color-magenta-900: #3f1736; --color-magenta-950: #2a1024;
+
+  --color-neutral-50: #f7f6fa; --color-neutral-100: #eeebf4; --color-neutral-200: #dcd9e1; --color-neutral-300: #bfbcc4;
+  --color-neutral-400: #a09da5; --color-neutral-500: #827f86; --color-neutral-600: #6a676f; --color-neutral-700: #545158;
+  --color-neutral-800: #3e3c42; --color-neutral-900: #2a272e; --color-neutral-950: #1c191f;
+
+  /* Semantic aliases */
+  --color-surface: #ffffff;
+  --color-surface-tint: #f9f5ff;
+  --color-text: #24201d;
+  --color-text-muted: #6a676f;
+  --color-border: #dcd9e1;
+  --color-focus: #34419a;
+  --color-danger: #b42318;
+  --color-danger-bg: #fef3f2;
+  --color-success: #166534;
+  --color-success-bg: #f0fdf4;
+
+  /* Type scale (fluid) */
+  --text-sm: 0.875rem;   --text-sm--line-height: 1.5;
+  --text-base: 1rem;     --text-base--line-height: 1.7;
+  --text-lg: 1.125rem;   --text-lg--line-height: 1.65;
+  --text-xl: 1.25rem;    --text-xl--line-height: 1.45;
+  --text-2xl: clamp(1.375rem, 1.2rem + 0.8vw, 1.75rem); --text-2xl--line-height: 1.3;
+  --text-3xl: clamp(1.75rem, 1.4rem + 1.6vw, 2.5rem);   --text-3xl--line-height: 1.2;
+  --text-4xl: clamp(2rem, 1.45rem + 2.6vw, 3.25rem);    --text-4xl--line-height: 1.12;
+  --text-script: clamp(3rem, 2rem + 5vw, 5.5rem);       --text-script--line-height: 1;
+
+  --tracking-eyebrow: 0.22em;
+  --radius-card: 1.25rem;
+  --radius-photo: 1.5rem;
+  --shadow-soft: 0 12px 32px -14px rgb(100 60 142 / 0.28);
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --breakpoint-xs: 23.4375rem; /* 375px */
+}
+
+@theme inline {
+  /* The Fonts API variables already include the fallback stacks from astro.config.mjs */
+  --font-sans: var(--font-exo2);        /* headings + body */
+  --font-accent: var(--font-opensans);  /* taglines */
+  --font-script: var(--font-dancing);   /* the word "Elevating" only */
+}
+
+:root {
+  /* Gradients, measured as stops across the brochure's bands */
+  --gradient-bridge: linear-gradient(90deg, #643c8e 0%, #5e4e94 25%, #56609c 48%, #4777a9 80%, #478cb9 100%);
+  --gradient-dusk: linear-gradient(90deg, #34419a 0%, #4b40a1 25%, #6042a7 45%, #7243a5 62%, #8f53b5 80%, #9460b8 100%);
+  --gradient-ribbon: linear-gradient(90deg, #a1388b 0%, #b04f9f 45%, #8e5a97 75%, #653e97 100%);
+  --gradient-violet: linear-gradient(135deg, #663d9e 0%, #6649ae 45%, #604eb6 70%, #7e63b5 100%);
+  --gradient-orb: linear-gradient(90deg, #8d3e97 0%, #7d3d9b 30%, #713f9f 55%, #6649ae 100%);
+  --gradient-heading: linear-gradient(90deg, #643c8e 0%, #a1388b 100%);
+  --header-h: 4rem;
+  --actionbar-h: 0rem;
+  color-scheme: light;
+  scroll-padding-top: calc(var(--header-h) + 1rem);
+  scroll-padding-bottom: calc(var(--actionbar-h) + 1rem);
+}
+@media (min-width: 64rem) { :root { --header-h: 4.75rem; } }
+
+/* Gradient utilities ----------------------------------------------------- */
+@utility bg-bridge { background-image: var(--gradient-bridge); }
+@utility bg-dusk { background-image: var(--gradient-dusk); }
+@utility bg-ribbon { background-image: var(--gradient-ribbon); }
+@utility bg-violet-panel { background-image: var(--gradient-violet); }
+@utility bg-orb { background-image: var(--gradient-orb); }
+@utility text-gradient {
+  background-image: var(--gradient-heading);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@media (forced-colors: active) {
+  .text-gradient { background: none; color: CanvasText; }
+}
+
+/* Layout helpers --------------------------------------------------------- */
+@utility container-page {
+  width: 100%;
+  max-inline-size: 75rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+@utility section-y { padding-block: clamp(4rem, 3rem + 4vw, 7rem); }
+@utility prose-measure { max-inline-size: 68ch; text-wrap: pretty; }
+@utility deferred {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
+@media (min-width: 48rem) { .container-page { padding-inline: 1.5rem; } }
+@media (min-width: 64rem) { .container-page { padding-inline: 2rem; } }
+
+/* Base ------------------------------------------------------------------- */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: auto;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+    @view-transition { navigation: auto; }
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    padding-bottom: calc(var(--actionbar-h) + env(safe-area-inset-bottom, 0px));
+  }
+  @media (min-width: 64rem) { body { font-size: 1.0625rem; } }
+
+  h1, h2, h3, h4 { font-weight: 600; line-height: 1.15; text-wrap: balance; margin: 0; }
+  p, ul, ol, dl { margin: 0; }
+
+  a { color: var(--color-brand-indigo); text-underline-offset: 0.2em; }
+  a:hover { color: var(--color-royal-700); }
+
+  :focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+  .on-dark :focus-visible, .bg-dusk :focus-visible, .bg-violet-panel :focus-visible { outline-color: #ffffff; }
+
+  img, svg, picture, video { max-width: 100%; height: auto; display: block; }
+
+  ::selection { background: var(--color-royal-200); color: var(--color-ink); }
+
+  /* Long email addresses must never push the layout sideways. */
+  .break-anywhere { overflow-wrap: anywhere; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* Visually hidden -------------------------------------------------------- */
+@utility sr-only-custom {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Entrance animation: enhancement only, content is visible without it. ---- */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .rise {
+      animation: rise-in linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 26%;
+    }
+    @keyframes rise-in {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: none; }
+    }
+  }
+}
+
+/* Bridge band ------------------------------------------------------------ */
+.bridge-wrap { container-type: inline-size; }
+.bridge {
+  --center: 78cqi;                               /* waist centre on narrow screens */
+  --ww: clamp(170px, 34cqi, 445px);              /* waist width */
+  --wx: calc(var(--center) - var(--ww) * 0.479); /* waist left edge (centre sits at 47.9% of the SVG) */
+  position: relative;
+  block-size: max(9.5rem, calc(var(--ww) * 0.64));
+  background-image: var(--gradient-bridge);
+  -webkit-mask-image: linear-gradient(#000 0 0), url("/brand/bridge-waist-mask.svg"), linear-gradient(#000 0 0);
+          mask-image: linear-gradient(#000 0 0), url("/brand/bridge-waist-mask.svg"), linear-gradient(#000 0 0);
+  -webkit-mask-size: calc(var(--wx) + 1px) 100%, var(--ww) 100%, calc(100cqi - var(--wx) - var(--ww) + 1px) 100%;
+          mask-size: calc(var(--wx) + 1px) 100%, var(--ww) 100%, calc(100cqi - var(--wx) - var(--ww) + 1px) 100%;
+  -webkit-mask-position: 0 0, var(--wx) 0, 100% 0;
+          mask-position: 0 0, var(--wx) 0, 100% 0;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+}
+.bridge::after { /* the soft shadow in the waist, as printed */
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(closest-side, rgb(21 22 58 / 0.7), transparent) no-repeat;
+  background-size: calc(var(--ww) * 0.7) 45%;
+  background-position: calc(var(--wx) + var(--ww) * 0.129) 50%;
+}
+.bridge-copy {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-inline-start: max(1rem, 6cqi);
+  max-inline-size: calc(var(--wx) - 2rem);
+}
+@container (min-width: 40rem) { .bridge { --center: 65cqi; } }
+
+/* Ribbon label ----------------------------------------------------------- */
+.ribbon {
+  display: inline-flex;
+  align-items: center;
+  background-image: var(--gradient-ribbon);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  letter-spacing: 0.04em;
+  padding: 0.4rem 1.6rem 0.4rem 0.9rem;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 1rem) 100%, 0 100%);
+}
+.ribbon-group { display: flex; align-items: center; gap: 0.5rem; }
+.ribbon-slashes {
+  display: inline-block;
+  inline-size: 1.15rem;
+  block-size: 1.15rem;
+  background-image:
+    linear-gradient(20deg, transparent 44%, var(--color-brand-violet) 44%, var(--color-brand-violet) 56%, transparent 56%),
+    linear-gradient(20deg, transparent 44%, var(--color-brand-violet) 44%, var(--color-brand-violet) 56%, transparent 56%);
+  background-size: 0.34rem 100%;
+  background-position: 0 0, 0.5rem 0;
+  background-repeat: no-repeat;
+}
+@media (forced-colors: active) {
+  .ribbon { background: Highlight; color: HighlightText; }
+}
+
+/* Orb -------------------------------------------------------------------- */
+.orb {
+  display: grid;
+  place-content: center;
+  text-align: center;
+  inline-size: min(19rem, 82vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background-image: var(--gradient-orb);
+  color: #ffffff;
+  padding: 2.25rem;
+  box-shadow: 0 0 0 0.5rem #fff, 0 0 0 0.75rem var(--color-brand-violet);
+}
+
+/* Violet panel with one large rounded corner ----------------------------- */
+.violet-panel {
+  background-image: var(--gradient-violet);
+  color: #ffffff;
+  border-start-start-radius: 40% 6rem;
+  border-end-end-radius: 40% 6rem;
+}
+
+/* Header hairline appears once the page scrolls (progressive enhancement) - */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    .header-line {
+      animation: header-line linear both;
+      animation-timeline: scroll();
+      animation-range: 0 6rem;
+    }
+    @keyframes header-line {
+      from { border-bottom-color: transparent; box-shadow: none; }
+      to { border-bottom-color: var(--color-border); box-shadow: 0 4px 16px -12px rgb(36 32 29 / 0.5); }
+    }
+  }
+}

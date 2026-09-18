@@ -1,0 +1,14 @@
+{
+  "horizontal": {
+    "width": 326,
+    "height": 76
+  },
+  "stacked": {
+    "width": 254,
+    "height": 210
+  },
+  "mark": {
+    "width": 64,
+    "height": 64
+  }
+}

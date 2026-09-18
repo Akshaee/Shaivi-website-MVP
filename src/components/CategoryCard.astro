@@ -1,0 +1,26 @@
+---
+import Icon from "./Icon.astro";
+import type { IconName } from "./Icon.astro";
+
+interface Props {
+  name: string;
+  href: string;
+  icon?: IconName;
+}
+const { name, href, icon } = Astro.props;
+---
+
+<a
+  href={href}
+  class="group flex h-full flex-col rounded-card border border-border bg-white p-6 no-underline shadow-soft transition-colors duration-200 ease-out-soft hover:border-royal-300 focus-visible:border-royal-300"
+>
+  <span class="flex size-12 shrink-0 items-center justify-center rounded-full bg-royal-50 text-brand-purple">
+    {icon ? <Icon name={icon} size={24} /> : <Icon name="shield-check" size={24} />}
+  </span>
+  <slot name="media" />
+  <h3 class="mt-4 text-xl text-brand-plum">{name}</h3>
+  <span class="mt-auto pt-4 inline-flex items-center gap-1.5 font-semibold text-brand-indigo">
+    View details<span class="sr-only-custom">: {name}</span>
+    <Icon name="chevron-right" size={18} />
+  </span>
+</a>

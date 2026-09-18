@@ -1,0 +1,10 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { organization, webSite } from "../lib/schema";
+---
+
+<BaseLayout seoKey="/" schema={[organization(Astro.site), webSite(Astro.site)]}>
+  <section class="container-page section-y">
+    <h1 class="text-4xl text-brand-ink-indigo">Placeholder home page</h1>
+  </section>
+</BaseLayout>

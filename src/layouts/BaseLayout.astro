@@ -1,0 +1,47 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import SkipLink from "../components/SkipLink.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import MobileActionBar from "../components/MobileActionBar.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import type { Crumb } from "../components/Breadcrumbs.astro";
+import type { SeoKey } from "../lib/seo";
+import "../styles/global.css";
+
+interface Props {
+  seoKey: SeoKey;
+  breadcrumbs?: Crumb[];
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+  actionBar?: boolean;
+}
+
+const { seoKey, breadcrumbs, schema, actionBar = true } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en-IN" class={actionBar ? "has-action-bar" : undefined}>
+  <head>
+    <BaseHead seoKey={seoKey} schema={schema} />
+  </head>
+  <body>
+    <SkipLink />
+    <SiteHeader />
+    {breadcrumbs && <Breadcrumbs trail={breadcrumbs} />}
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <SiteFooter />
+    {actionBar && <MobileActionBar />}
+  </body>
+</html>
+
+<style is:global>
+  /* Reserve room for the fixed mobile action bar so it never covers content
+     or a focused element (WCAG 2.4.11). */
+  @media (max-width: 47.99rem) {
+    html.has-action-bar {
+      --actionbar-h: 4.5rem;
+    }
+  }
+</style>

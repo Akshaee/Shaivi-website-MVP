@@ -1,0 +1,37 @@
+---
+import { Picture } from "astro:assets";
+import Button from "./Button.astro";
+import content from "../data/content.json";
+import { photos, altFor } from "../lib/images";
+
+interface Props {
+  headingId?: string;
+}
+const { headingId = "cta-heading" } = Astro.props;
+const { about, contact, ui } = content;
+const firstPhone = contact.phones[0]!;
+---
+
+<section class="on-dark relative isolate overflow-hidden" aria-labelledby={headingId}>
+  <Picture
+    src={photos["operating-room-team"]}
+    alt={altFor("operating-room-team")}
+    widths={[640, 1024, 1600, 2000]}
+    sizes="100vw"
+    formats={["avif", "webp"]}
+    fallbackFormat="jpg"
+    loading="lazy"
+    class="absolute inset-0 -z-10 size-full object-cover"
+  />
+  <div class="absolute inset-0 -z-10 bg-dusk opacity-[0.94]"></div>
+  <div class="container-page section-y">
+    <div class="max-w-[46rem]">
+      <h2 id={headingId} class="text-3xl text-white">A reliable partner for healthcare providers</h2>
+      <p class="mt-5 prose-measure text-lg text-royal-100">{about.mission}</p>
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <Button href="/contact/" variant="on-dark" arrow>{ui.primaryCta}</Button>
+        <Button href={firstPhone.tel} variant="on-dark">Call us</Button>
+      </div>
+    </div>
+  </div>
+</section>

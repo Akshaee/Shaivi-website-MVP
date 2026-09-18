@@ -1,0 +1,48 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  href?: string;
+  variant?: "primary" | "secondary" | "on-dark";
+  type?: "button" | "submit";
+  arrow?: boolean;
+  loading?: boolean;
+  full?: boolean;
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  href,
+  variant = "primary",
+  type = "button",
+  arrow = false,
+  loading = false,
+  full = false,
+  class: className = "",
+  ...rest
+} = Astro.props;
+
+const base =
+  "inline-flex items-center justify-center gap-2 rounded-full px-6 min-h-[48px] py-3 font-semibold " +
+  "text-base no-underline transition-colors duration-200 ease-out-soft text-center";
+
+const variants = {
+  primary: "bg-brand-purple text-white hover:bg-royal-700",
+  secondary: "border-2 border-brand-purple bg-white text-brand-purple hover:bg-royal-50",
+  "on-dark": "border-2 border-white bg-transparent text-white hover:bg-white/15",
+} as const;
+
+const classes = [base, variants[variant], full ? "w-full" : "", className].filter(Boolean).join(" ");
+const Tag = href ? "a" : "button";
+---
+
+<Tag
+  class={classes}
+  {...href ? { href } : { type, disabled: loading || undefined }}
+  aria-busy={loading ? "true" : undefined}
+  {...rest}
+>
+  <slot />
+  {arrow && <Icon name="arrow-right" size={20} class="shrink-0" />}
+</Tag>

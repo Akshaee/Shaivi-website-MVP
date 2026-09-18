@@ -1,0 +1,266 @@
+{
+  "company": {
+    "brand": "SHAIVI",
+    "trademark": "SHAIVI™",
+    "legalName": "Dhrithi Surgical Solutions Private Limited",
+    "shortName": "Dhrithi Surgical Solutions",
+    "alsoKnownAs": "Shaivi Surgical",
+    "tagline": "SAFETY MEETS CARE",
+    "coverTagline": [
+      "Innovating safety",
+      "Bridging care"
+    ],
+    "certification": "ISO 13485 Certified Company",
+    "foundingDate": "2017-11-08",
+    "website": "www.dhrithisurgicalsolutions.com",
+    "heroScriptWord": "Elevating",
+    "heroHeadline": "the standard of safety with premium sterile products"
+  },
+  "about": {
+    "label": "About Us",
+    "heading": "A Commitment to Excellence in Healthcare",
+    "paragraphs": [
+      "Known in the healthcare landscape as Shaivi Surgical and formally recognized as Dhrithi Surgical Solutions Private Limited, we represent unwavering trust and excellence in surgical solutions. Since our founding on November 8, 2017, we have dedicated ourselves to the highest standards of quality, developing innovative surgical disposables and protective products that empower healthcare professionals to deliver exceptional patient care.",
+      "At Dhrithi Surgical Solutions Private Limited, our mission is to be a reliable partner for healthcare providers by ensuring safety and sterility in every product we manufacture.",
+      "With a commitment to precision and integrity, we proudly support the vital work of healthcare professionals dedicated to improving lives."
+    ],
+    "mission": "At Dhrithi Surgical Solutions Private Limited, our mission is to be a reliable partner for healthcare providers by ensuring safety and sterility in every product we manufacture.",
+    "manufacturersHeading": "Manufacturers of",
+    "customisation": "We provide all types of Customised Disposable Drapes, Kits & Gowns",
+    "categories": [
+      {
+        "id": "surgical-disposable-gowns",
+        "name": "Surgical Disposable Gowns",
+        "icon": "shield-check",
+        "hasDetail": true
+      },
+      {
+        "id": "surgical-disposable-drape-kits",
+        "name": "Surgical Disposable Drape Kits",
+        "icon": "layers",
+        "hasDetail": false
+      },
+      {
+        "id": "surgical-dressings",
+        "name": "Surgical Dressings",
+        "icon": "bandage",
+        "hasDetail": false
+      },
+      {
+        "id": "surgical-packing-materials",
+        "name": "Surgical Packing Materials",
+        "icon": "package",
+        "hasDetail": false
+      },
+      {
+        "id": "hygiene-protective-products",
+        "name": "Hygiene & Protective Products",
+        "icon": "hand-heart",
+        "hasDetail": false
+      }
+    ]
+  },
+  "infrastructure": {
+    "label": "Infrastructure & Capabilities",
+    "heading": "Built for Quality and Reliability",
+    "intro": "Our state-of-the-art infrastructure reflects our promise of quality, safety, and seamless delivery.",
+    "items": [
+      {
+        "id": "advanced-facility",
+        "stat": "35,000 sq. ft.",
+        "title": "Advanced Facility",
+        "text": "35,000 sq. ft. dedicated to precise, high-standard manufacturing",
+        "icon": "factory"
+      },
+      {
+        "id": "skilled-team",
+        "stat": "200",
+        "title": "Skilled Team",
+        "text": "200 production and marketing professionals focused on consistent excellence",
+        "icon": "users"
+      },
+      {
+        "id": "quality-standards",
+        "stat": "ISO 13485",
+        "title": "Quality Standards",
+        "text": "ISO compliance that ensures the highest levels of sterility and safety. Every element of our operations, from our spacious warehousing to our optimised logistics network, is designed to deliver efficiency and reliability. At Shaivi, we’re prepared to meet the ever-evolving demands of healthcare, ensuring each product reaches our clients on time and ready to perform.",
+        "textShort": "ISO compliance that ensures the highest levels of sterility and safety.",
+        "icon": "award"
+      },
+      {
+        "id": "strategic-location",
+        "stat": "1 acre",
+        "title": "Strategic Location",
+        "text": "Bhatkal, Karnataka, India, situated across 1 acre of land",
+        "icon": "map"
+      }
+    ]
+  },
+  "leadership": {
+    "label": "Leadership",
+    "heading": "Visionaries Driving SHAIVI’s Innovation",
+    "text": "Behind Shaivi is a leadership team whose vision and expertise shape every facet of our company. With a shared commitment to innovation, integrity, and unwavering quality, our leaders drive us forward. Their guidance has crafted a company culture that prioritises ethical practices, client satisfaction, and a dedication to setting new standards in healthcare solutions.",
+    "people": [
+      {
+        "id": "md-sharath-kumar-shetty",
+        "name": "Sharath Kumar Shetty",
+        "role": "Managing Director",
+        "image": "md-sharath-kumar-shetty"
+      }
+    ]
+  },
+  "gowns": {
+    "id": "gowns",
+    "categoryId": "surgical-disposable-gowns",
+    "heading": "Gowns",
+    "intro": [
+      "Experience the pinnacle of protection and comfort with our GOWNS. Crafted from a superior blend of SMS, SMMS, Spunlace, Spunbond, and non-woven fabrics, these gowns redefine surgical standards. Designed for maximum air permeability, they ensure you stay comfortable and focused during even the most prolonged operations.",
+      "Our gowns boast exceptional features: they are water-resistant, alcohol-repellent, liquid-repellent, and anti-static, all while remaining 100% breathable. Perfectly engineered for the rigours of surgery, they meet every demand with elegance and efficiency.",
+      "With soft knit cuffs that enhance comfort and extended length for seamless closed gloving, our surgical gowns are not just a choice—they’re a commitment to excellence in surgical care."
+    ],
+    "features": [
+      "Water-resistant",
+      "Alcohol-repellent",
+      "Liquid-repellent",
+      "Anti-static",
+      "100% breathable",
+      "Soft knit cuffs",
+      "Extended length for closed gloving"
+    ],
+    "fabricsLabel": "Fabrics",
+    "fabrics": [
+      "SMS",
+      "SMMS",
+      "Spunlace",
+      "Spunbond",
+      "Non-woven",
+      "BVB (Breathable Viral Barrier)"
+    ],
+    "types": [
+      {
+        "id": "standard-surgical-gowns",
+        "name": "Standard Surgical Gowns",
+        "paragraphs": [
+          "Our standard surgical gowns are constructed from premium materials such as SMS, SMMS, spunlace, spunbond, and non-woven fabric.",
+          "These gowns are designed to offer superior protection against microorganisms while delivering exceptional comfort through enhanced breathability.",
+          "Engineered for durability and performance, these gowns ensure excellent air and permeable protection, providing comfort and convenience even during lengthy surgical procedures. They feature water, alcohol, and liquid repellency, along with anti-static properties, making them ideal for various surgical settings. With 100% breathable fabric, our gowns are a reliable choice for any surgical team."
+        ]
+      },
+      {
+        "id": "patient-gowns",
+        "name": "Patient Gowns",
+        "lead": "Have you ever wondered why hospital gowns feel so light and comfortable, yet keep you protected?",
+        "paragraphs": [
+          "Shaivi crafts its patient gowns from advanced materials like SMS, SMMS, spunlace, and spunbond non-woven fabrics. These fabrics aren’t just lightweight—they’re also highly breathable, allowing air to circulate freely to keep patients comfortable, even during extended hospital stays. Designed to shield against microorganisms, these gowns prioritise hygiene without sacrificing comfort. Plus, with 100% breathability, they help reduce skin irritation and support temperature control, making every patient’s experience safer and more comfortable."
+        ]
+      },
+      {
+        "id": "reinforced-bvb-surgical-gowns",
+        "name": "Reinforced and BVB Surgical Gowns",
+        "subheading": "Built for Comfort and Protection",
+        "image": "surgical-team-face-shields",
+        "paragraphs": [
+          "These reinforced surgical gowns are crafted from top-quality, non-woven fabrics—BVB, SMS, SMMS, Spunlace, and Spunbond—to offer outstanding comfort and protection.",
+          "The key component, Breathable Viral Barrier (BVB) fabric, is a cutting-edge tri-laminate material with a breathable monolithic film that blocks infectious viruses like HIV/AIDS and SARS, while allowing airflow for all-day comfort.",
+          "Soft yet highly repellent fabric covers the gown’s front and sleeves, providing resistance to blood, alcohol, and other fluids. This ensures comfort and security, even during extended surgeries.",
+          "Reinforced zones on the chest and arms provide extra strength where it’s needed most, delivering both strikethrough protection and comfort for long procedures. Thoughtfully designed, these gowns support you with lasting protection and ease, so you can stay focused on what matters most."
+        ]
+      }
+    ]
+  },
+  "contact": {
+    "officeLabel": "Corporate Office",
+    "addressLines": [
+      "Dhrithi Surgical Solutions Private Limited",
+      "S.No-355/8, Belke Post & Village,",
+      "Bhatkal Taluk, Uttara Kannada District,",
+      "Karnataka - 581 320, India."
+    ],
+    "postalAddress": {
+      "streetAddress": "S.No-355/8, Belke Post & Village",
+      "addressLocality": "Bhatkal",
+      "addressRegion": "Karnataka",
+      "postalCode": "581320",
+      "addressCountry": "IN"
+    },
+    "email": "dhrithisurgicalsolutions@gmail.com",
+    "phones": [
+      {
+        "display": "+91 99860 99687",
+        "tel": "tel:+919986099687"
+      },
+      {
+        "display": "+91 98865 59945",
+        "tel": "tel:+919886559945"
+      },
+      {
+        "display": "+91 97390 64401",
+        "tel": "tel:+919739064401"
+      }
+    ],
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Dhrithi+Surgical+Solutions+Belke+Bhatkal+Karnataka+581320",
+    "whatsapp": {
+      "enabled": false,
+      "number": "",
+      "prefill": "Hello SHAIVI, I would like to enquire about surgical disposables."
+    }
+  },
+  "seo": {
+    "/": {
+      "title": "Surgical Gowns & Drapes Manufacturer in India | SHAIVI",
+      "description": "SHAIVI by Dhrithi Surgical Solutions, an ISO 13485 certified company in Karnataka, makes surgical gowns, drape kits, dressings and protective products."
+    },
+    "/about/": {
+      "title": "About Shaivi Surgical | Dhrithi Surgical Solutions",
+      "description": "Since 2017, Dhrithi Surgical Solutions (Shaivi Surgical) has made sterile surgical disposables in a 35,000 sq. ft. facility in Bhatkal, Karnataka, India."
+    },
+    "/products/": {
+      "title": "Surgical Gowns, Drape Kits & Dressings | SHAIVI",
+      "description": "Explore SHAIVI standard, patient and reinforced BVB surgical gowns, plus drape kits, dressings, packing materials and hygiene and protective products."
+    },
+    "/contact/": {
+      "title": "Contact SHAIVI | Request a Quote for Surgical Gowns",
+      "description": "Contact Dhrithi Surgical Solutions in Bhatkal, Karnataka for surgical gowns, drape kits and customised disposable drapes, kits and gowns. Send an enquiry."
+    },
+    "/privacy-policy/": {
+      "title": "Privacy Policy | Dhrithi Surgical Solutions",
+      "description": "Read how Dhrithi Surgical Solutions Private Limited collects, uses, stores and protects the personal data you share through our website enquiry form."
+    },
+    "/404": {
+      "title": "Page Not Found | SHAIVI Surgical Disposables",
+      "description": "This page could not be found. Browse SHAIVI surgical gowns, drape kits and protective products, or contact Dhrithi Surgical Solutions for help today."
+    }
+  },
+  "images": {
+    "hero-nurse": {
+      "alt": "Smiling healthcare professional in a blue disposable surgical gown, bouffant cap and sterile gloves, arms crossed"
+    },
+    "operating-room-team": {
+      "alt": "",
+      "decorative": true,
+      "description": "Surgical team in sterile disposable gowns, masks and caps performing an operation under theatre lights"
+    },
+    "factory-bhatkal": {
+      "alt": "Dhrithi Surgical Solutions surgical disposables manufacturing facility in Bhatkal, Karnataka"
+    },
+    "md-sharath-kumar-shetty": {
+      "alt": "Sharath Kumar Shetty, Managing Director of Dhrithi Surgical Solutions (SHAIVI)"
+    },
+    "surgical-gown-model": {
+      "alt": "Surgeon wearing a light blue SHAIVI disposable surgical gown with knit cuffs, surgical mask and cap"
+    },
+    "surgical-team-face-shields": {
+      "alt": "Three healthcare workers in reinforced disposable surgical gowns, face shields and masks"
+    },
+    "dhrithi-emblem": {
+      "alt": "Dhrithi Surgical Solutions emblem"
+    }
+  },
+  "ui": {
+    "primaryCta": "Request a Quote",
+    "secondaryCta": "Explore Products",
+    "detailsOnRequest": "Product details are available on request.",
+    "detailsCta": "Request details",
+    "newTabHint": "opens in a new tab"
+  }
+}

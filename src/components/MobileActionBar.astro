@@ -1,0 +1,28 @@
+---
+import Icon from "./Icon.astro";
+import content from "../data/content.json";
+
+const firstPhone = content.contact.phones[0]!;
+---
+
+<div
+  id="mobile-action-bar"
+  class="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-white/97 pb-[env(safe-area-inset-bottom,0px)] shadow-[0_-6px_20px_-16px_rgb(36_32_29/0.6)] md:hidden"
+>
+  <div class="grid grid-cols-2 gap-2 p-2">
+    <a
+      href={firstPhone.tel}
+      class="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full border-2 border-brand-purple bg-white px-4 font-semibold text-brand-purple no-underline"
+    >
+      <Icon name="phone" size={20} />
+      Call
+    </a>
+    <a
+      href="/contact/"
+      class="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full bg-brand-purple px-4 font-semibold text-white no-underline"
+    >
+      <Icon name="mail" size={20} />
+      Enquire
+    </a>
+  </div>
+</div>

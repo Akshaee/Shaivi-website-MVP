@@ -1,0 +1,20 @@
+---
+import Icon from "./Icon.astro";
+import type { IconName } from "./Icon.astro";
+
+interface Props {
+  stat: string;
+  title: string;
+  text: string;
+  icon?: IconName;
+  headingId?: string;
+}
+const { stat, title, text, icon, headingId } = Astro.props;
+---
+
+<div class="flex h-full flex-col rounded-card border border-border bg-white p-6 shadow-soft">
+  {icon && <Icon name={icon} size={28} class="text-brand-purple" />}
+  <p class="mt-4 text-2xl font-bold tabular-nums text-brand-ink-indigo">{stat}</p>
+  <h3 id={headingId} class="mt-1 text-xl text-brand-plum">{title}</h3>
+  <p class="mt-2 text-base text-text-muted">{text}</p>
+</div>

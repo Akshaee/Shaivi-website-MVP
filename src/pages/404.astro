@@ -1,0 +1,31 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Button from "../components/Button.astro";
+import sizes from "../assets/brand/logo-sizes.json";
+
+const logoW = Math.round((sizes.stacked.width / sizes.stacked.height) * 120);
+---
+
+<BaseLayout seoKey="/404">
+  <section class="container-page section-y" aria-labelledby="notfound-heading">
+    <div class="mx-auto max-w-[36rem] text-center">
+      <img
+        src="/brand/shaivi-logo-stacked.svg"
+        alt=""
+        width={logoW}
+        height={120}
+        class="mx-auto h-[120px] w-auto"
+        decoding="async"
+      />
+      <h1 id="notfound-heading" class="mt-10 text-4xl text-brand-ink-indigo">Page not found</h1>
+      <p class="mt-5 text-lg text-text-muted">
+        The page you asked for isn’t here — it may have moved or the address may be mistyped.
+      </p>
+      <div class="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
+        <Button href="/">Go to the home page</Button>
+        <Button href="/products/" variant="secondary">Browse products</Button>
+        <Button href="/contact/" variant="secondary">Contact us</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

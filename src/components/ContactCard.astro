@@ -1,0 +1,81 @@
+---
+import { Picture } from "astro:assets";
+import Icon from "./Icon.astro";
+import content from "../data/content.json";
+import { photos, altFor } from "../lib/images";
+
+interface Props {
+  onDark?: boolean;
+  class?: string;
+  headingLevel?: "h2" | "h3" | "p";
+  showHeading?: boolean;
+}
+const { onDark = false, class: className = "", headingLevel = "p", showHeading = true } = Astro.props;
+const { contact, ui } = content;
+const Heading = headingLevel;
+
+const muted = onDark ? "text-royal-100" : "text-text-muted";
+const link = onDark ? "text-white" : "text-brand-indigo";
+---
+
+<div class={`${className}`}>
+  <div class="flex items-start gap-4">
+    <span class="inline-flex shrink-0 rounded-xl bg-white p-2">
+      <Picture
+        src={photos["dhrithi-emblem"]}
+        alt={altFor("dhrithi-emblem")}
+        widths={[80, 160]}
+        sizes="80px"
+        formats={["avif", "webp"]}
+        fallbackFormat="png"
+        loading="lazy"
+        class="size-16 object-contain"
+      />
+    </span>
+    {
+      showHeading && (
+        <Heading class={`text-xl font-semibold ${onDark ? "text-white" : "text-brand-plum"}`}>
+          {contact.officeLabel}
+        </Heading>
+      )
+    }
+  </div>
+
+  <address class={`mt-5 not-italic ${muted}`}>
+    <span class="flex gap-3">
+      <Icon name="map-pin" size={20} class={`mt-1 shrink-0 ${onDark ? "text-royal-200" : "text-brand-purple"}`} />
+      <span class="block">
+        {contact.addressLines.map((line) => <span class="block">{line}</span>)}
+      </span>
+    </span>
+
+    <span class="mt-4 flex gap-3">
+      <Icon name="mail" size={20} class={`mt-1 shrink-0 ${onDark ? "text-royal-200" : "text-brand-purple"}`} />
+      <a href={`mailto:${contact.email}`} class={`break-anywhere py-1 ${link}`}>{contact.email}</a>
+    </span>
+
+    <span class="mt-4 flex gap-3">
+      <Icon name="phone" size={20} class={`mt-1 shrink-0 ${onDark ? "text-royal-200" : "text-brand-purple"}`} />
+      <span class="flex flex-col gap-1">
+        {
+          contact.phones.map((phone) => (
+            <a href={phone.tel} class={`py-1 ${link}`}>
+              {phone.display}
+            </a>
+          ))
+        }
+      </span>
+    </span>
+  </address>
+
+  <a
+    href={contact.mapsUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    class={`mt-5 inline-flex min-h-[44px] items-center gap-2 py-1 font-semibold ${link}`}
+  >
+    Get directions
+    <Icon name="external-link" size={18} />
+    <span class="text-sm font-normal">({ui.newTabHint})</span>
+  </a>
+</div>

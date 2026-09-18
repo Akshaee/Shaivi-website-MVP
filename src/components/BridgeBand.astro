@@ -1,0 +1,30 @@
+---
+/**
+ * The cover's signature purple-to-blue band, pinched into a narrow waist.
+ * Built from the gradient plus a three-layer CSS mask so the flat parts
+ * stretch while the waist keeps its shape at every width (§4.5).
+ */
+interface Props {
+  lines: string[];
+  as?: "h2" | "p";
+  headingId?: string;
+  overlap?: boolean;
+  class?: string;
+}
+
+const { lines, as = "h2", headingId, overlap = false, class: className = "" } = Astro.props;
+const Tag = as;
+---
+
+<div class={`bridge-wrap ${overlap ? "-mt-10 lg:-mt-16" : ""} ${className}`}>
+  <div class="bridge">
+    <div class="bridge-copy">
+      <Tag
+        id={headingId}
+        class="font-accent text-xl font-normal leading-tight text-white drop-shadow-[0_1px_2px_rgba(20,15,40,0.45)] sm:text-2xl"
+      >
+        {lines.map((line, i) => <span class="block">{line}{i < lines.length - 1 ? "" : ""}</span>)}
+      </Tag>
+    </div>
+  </div>
+</div>

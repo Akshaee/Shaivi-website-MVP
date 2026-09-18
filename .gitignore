@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.astro/
+.vercel/
+.output/
+.env
+.env.*
+!.env.example
+test-results/
+playwright-report/
+blob-report/
+.lighthouseci/
+*.log
+.DS_Store

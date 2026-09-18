@@ -1,0 +1,12 @@
+---
+interface Props {
+  text: string;
+  class?: string;
+}
+const { text, class: className = "" } = Astro.props;
+---
+
+<div class={`ribbon-group ${className}`}>
+  <p class="ribbon m-0">{text}</p>
+  <span class="ribbon-slashes" aria-hidden="true"></span>
+</div>

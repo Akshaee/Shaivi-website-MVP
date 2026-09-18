@@ -1,0 +1,25 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  items: string[];
+  onDark?: boolean;
+  label?: string;
+  class?: string;
+}
+const { items, onDark = false, label, class: className = "" } = Astro.props;
+const chip = onDark
+  ? "border-white/40 bg-white/12 text-white"
+  : "border-royal-200 bg-royal-50 text-brand-plum";
+---
+
+<ul class={`flex flex-wrap gap-2.5 ${className}`} aria-label={label}>
+  {
+    items.map((item) => (
+      <li class={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold ${chip}`}>
+        <Icon name="check" size={16} class="shrink-0" />
+        {item}
+      </li>
+    ))
+  }
+</ul>

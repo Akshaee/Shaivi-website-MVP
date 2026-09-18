@@ -1,0 +1,54 @@
+---
+import { Font } from "astro:assets";
+import { PUBLIC_SITE_INDEXABLE } from "astro:env/client";
+import JsonLd from "./JsonLd.astro";
+import content from "../data/content.json";
+import { getSeo, canonicalFor, absoluteUrl, type SeoKey } from "../lib/seo";
+
+interface Props {
+  seoKey: SeoKey;
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const { seoKey, schema } = Astro.props;
+const { title, description } = getSeo(seoKey);
+const canonical = canonicalFor(seoKey, Astro.site);
+const ogImage = absoluteUrl("/og/shaivi-og.jpg", Astro.site);
+const noindex = !PUBLIC_SITE_INDEXABLE || seoKey === "/404";
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title}</title>
+<meta name="description" content={description} />
+
+{canonical && <link rel="canonical" href={canonical} />}
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={content.company.brand} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+{canonical && <meta property="og:url" content={canonical} />}
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={`${content.company.brand} — ${content.company.tagline}`} />
+<meta property="og:locale" content="en_IN" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+<meta name="theme-color" content="#643C8E" />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+
+<Font cssVariable="--font-exo2" preload />
+<Font cssVariable="--font-opensans" />
+<Font cssVariable="--font-dancing" />
+
+{schema && <JsonLd schema={schema} />}

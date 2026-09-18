@@ -1,0 +1,168 @@
+---
+import Icon from "./Icon.astro";
+import Button from "./Button.astro";
+import content from "../data/content.json";
+import sizes from "../assets/brand/logo-sizes.json";
+
+const { contact, ui } = content;
+const firstPhone = contact.phones[0]!;
+const path = Astro.url.pathname;
+
+const nav = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about/" },
+  { label: "Products", href: "/products/" },
+  { label: "Contact", href: "/contact/" },
+];
+
+const isActive = (href: string) => (href === "/" ? path === "/" : path.startsWith(href));
+// The lockup is 326×76; render it 40px tall on mobile and 48px from lg.
+const logoW = Math.round((sizes.horizontal.width / sizes.horizontal.height) * 48);
+---
+
+<header
+  class="header-line sticky top-0 z-50 border-b border-transparent bg-white"
+
+>
+  <div class="container-page flex h-[var(--header-h)] items-center justify-between gap-4">
+    <a href="/" class="inline-flex shrink-0 items-center py-1" aria-label="SHAIVI – Safety Meets Care, home">
+      <img
+        src="/brand/shaivi-logo-horizontal.svg"
+        alt="SHAIVI – Safety Meets Care, home"
+        width={logoW}
+        height={48}
+        class="h-10 w-auto lg:h-12"
+        decoding="async"
+      />
+    </a>
+
+    <nav aria-label="Primary" class="hidden items-center gap-1 md:flex">
+      <ul class="m-0 flex list-none items-center gap-1 p-0">
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isActive(item.href) ? "page" : undefined}
+                class:list={[
+                  "inline-flex min-h-[44px] items-center rounded-full px-4 font-semibold no-underline transition-colors duration-200",
+                  isActive(item.href)
+                    ? "bg-royal-50 text-brand-plum"
+                    : "text-brand-ink-indigo hover:bg-royal-50 hover:text-brand-plum",
+                ]}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="hidden items-center gap-3 lg:flex">
+      <a
+        href={firstPhone.tel}
+        class="inline-flex min-h-[44px] items-center gap-2 px-2 font-semibold text-brand-indigo no-underline"
+      >
+        <Icon name="phone" size={18} />
+        {firstPhone.display}
+      </a>
+      <Button href="/contact/" class="px-5 text-sm">{ui.primaryCta}</Button>
+    </div>
+
+    <button
+      type="button"
+      popovertarget="site-menu"
+      class="inline-flex min-h-[44px] items-center gap-2 rounded-full border-2 border-brand-purple px-4 font-semibold text-brand-purple md:hidden"
+      id="menu-button"
+    >
+      <Icon name="menu" size={20} />
+      Menu
+    </button>
+  </div>
+
+  <!--
+    The Popover API gives light-dismiss and Esc for free, and returns focus to the
+    button, with no JavaScript. Without popover support the nav renders as a plain
+    visible list, which is still usable.
+  -->
+  <nav id="site-menu" popover aria-label="Primary" class="site-menu">
+    <div class="site-menu-inner">
+      <div class="flex items-center justify-between">
+        <p class="font-accent text-sm font-semibold uppercase tracking-eyebrow text-brand-magenta">Menu</p>
+        <button
+          type="button"
+          popovertarget="site-menu"
+          popovertargetaction="hide"
+          class="inline-flex size-11 items-center justify-center rounded-full border border-border text-brand-plum"
+        >
+          <Icon name="x" size={20} label="Close menu" />
+        </button>
+      </div>
+      <ul class="m-0 mt-4 flex list-none flex-col p-0">
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isActive(item.href) ? "page" : undefined}
+                class:list={[
+                  "flex min-h-[48px] items-center border-b border-border text-lg font-semibold no-underline",
+                  isActive(item.href) ? "text-brand-plum" : "text-brand-ink-indigo",
+                ]}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <a
+        href={firstPhone.tel}
+        class="mt-5 inline-flex min-h-[48px] items-center gap-2 font-semibold text-brand-indigo no-underline"
+      >
+        <Icon name="phone" size={18} />
+        {firstPhone.display}
+      </a>
+      <Button href="/contact/" class="mt-4" full arrow>{ui.primaryCta}</Button>
+    </div>
+  </nav>
+</header>
+
+<style>
+  /* Popover styles live here rather than inline so the CSP stays free of unsafe-inline. */
+  .site-menu {
+    inset: auto;
+    position: fixed;
+    top: var(--header-h);
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    border: 0;
+    border-bottom: 1px solid var(--color-border);
+    padding: 0;
+    background: #fff;
+    box-shadow: 0 18px 40px -26px rgb(36 32 29 / 0.6);
+  }
+  .site-menu-inner {
+    padding: 1rem 1rem 1.5rem;
+  }
+  .site-menu::backdrop {
+    background: rgb(36 32 29 / 0.35);
+  }
+  /* No popover support: show the nav inline instead of hiding it. */
+  @supports not selector(:popover-open) {
+    .site-menu {
+      position: static;
+      display: block;
+      box-shadow: none;
+    }
+  }
+  @media (min-width: 48rem) {
+    .site-menu {
+      display: none;
+    }
+  }
+</style>

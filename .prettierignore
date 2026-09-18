@@ -1,0 +1,10 @@
+dist
+.astro
+.vercel
+.lighthouseci
+test-results
+playwright-report
+package-lock.json
+src/assets
+public
+docs/brand-board.png
