@@ -17,6 +17,8 @@ export default defineConfig({
   integrations: [sitemap({ filter: (page) => !/\/(404|api)(\/|$)/.test(page) })],
   vite: { plugins: [tailwindcss()], build: { sourcemap: false } },
   image: { responsiveStyles: true, layout: "constrained" },
+  // No markdown content ships, and Shiki would emit inline styles the CSP blocks.
+  markdown: { syntaxHighlight: false },
   env: {
     schema: {
       PUBLIC_SITE_URL: envField.string({ context: "client", access: "public", optional: true }),

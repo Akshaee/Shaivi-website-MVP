@@ -128,10 +128,9 @@
 }
 @utility section-y { padding-block: clamp(4rem, 3rem + 4vw, 7rem); }
 @utility prose-measure { max-inline-size: 68ch; text-wrap: pretty; }
-@utility deferred {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 600px;
-}
+/* content-visibility was measured against the CLS budget and removed: on a site
+   this small it saved no measurable time while risking layout shift as sections
+   entered the viewport. Left out rather than applied. */
 
 @media (min-width: 48rem) { .container-page { padding-inline: 1.5rem; } }
 @media (min-width: 64rem) { .container-page { padding-inline: 2rem; } }
@@ -238,8 +237,8 @@
 }
 .bridge::after { /* the soft shadow in the waist, as printed */
   content: ""; position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(closest-side, rgb(21 22 58 / 0.7), transparent) no-repeat;
-  background-size: calc(var(--ww) * 0.7) 45%;
+  background: radial-gradient(closest-side, rgb(21 22 58 / 0.42), transparent) no-repeat;
+  background-size: calc(var(--ww) * 0.62) 40%;
   background-position: calc(var(--wx) + var(--ww) * 0.129) 50%;
 }
 .bridge-copy {
@@ -269,13 +268,13 @@
 .ribbon-group { display: flex; align-items: center; gap: 0.5rem; }
 .ribbon-slashes {
   display: inline-block;
-  inline-size: 1.15rem;
-  block-size: 1.15rem;
+  inline-size: 1.4rem;
+  block-size: 1.6rem;
   background-image:
     linear-gradient(20deg, transparent 44%, var(--color-brand-violet) 44%, var(--color-brand-violet) 56%, transparent 56%),
     linear-gradient(20deg, transparent 44%, var(--color-brand-violet) 44%, var(--color-brand-violet) 56%, transparent 56%);
-  background-size: 0.34rem 100%;
-  background-position: 0 0, 0.5rem 0;
+  background-size: 0.4rem 100%;
+  background-position: 0 0, 0.62rem 0;
   background-repeat: no-repeat;
 }
 @media (forced-colors: active) {

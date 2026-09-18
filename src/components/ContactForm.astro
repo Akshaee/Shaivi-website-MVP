@@ -1,0 +1,238 @@
+---
+import { PUBLIC_TURNSTILE_SITE_KEY } from "astro:env/client";
+import Button from "./Button.astro";
+import Icon from "./Icon.astro";
+import content from "../data/content.json";
+import { ENQUIRY_TYPES, ENQUIRY_TYPE_LABELS, MESSAGES } from "../lib/enquiry/schema";
+
+const { about, contact } = content;
+const turnstileKey = PUBLIC_TURNSTILE_SITE_KEY;
+
+const field = "w-full rounded-xl border-2 border-neutral-600 bg-white px-4 py-3 text-base text-text";
+const labelClass = "block font-semibold text-brand-ink-indigo";
+const hintClass = "mt-1 block text-sm text-text-muted";
+const errorClass = "mt-1 flex items-center gap-1.5 text-sm font-semibold text-danger";
+---
+
+<div id="enquiry-form-region">
+  <!-- Error summary, revealed by the enhancement script after a failed submit. -->
+  <div
+    id="error-summary"
+    class="mb-8 hidden rounded-card border-2 border-danger bg-danger-bg p-5"
+    tabindex="-1"
+    role="alert"
+    aria-labelledby="error-summary-heading"
+  >
+    <h3 id="error-summary-heading" class="flex items-center gap-2 text-xl text-danger">
+      <Icon name="alert-circle" size={22} />
+      There is a problem
+    </h3>
+    <ul id="error-summary-list" class="m-0 mt-3 list-disc pl-5"></ul>
+  </div>
+
+  <div
+    id="form-status"
+    class="mb-6 hidden rounded-card border-2 border-danger bg-danger-bg p-4 text-base font-semibold text-danger"
+    role="alert"
+  >
+  </div>
+
+  <form
+    id="enquiry-form"
+    method="post"
+    action="/api/contact/"
+    class="flex flex-col gap-6"
+    aria-describedby="privacy-summary"
+  >
+    <!-- Honeypot: hidden from sight, from the tab order and from assistive tech. -->
+    <div class="hp-wrap" aria-hidden="true">
+      <label for="company_website">Company website</label>
+      <input type="text" id="company_website" name="company_website" tabindex="-1" autocomplete="off" />
+    </div>
+    <input type="hidden" id="startedAt" name="startedAt" value="" />
+
+    <div>
+      <label class={labelClass} for="name">Full name</label>
+      <input
+        class={`${field} mt-2`}
+        type="text"
+        id="name"
+        name="name"
+        required
+        minlength="2"
+        maxlength="80"
+        autocomplete="name"
+        aria-describedby="name-error"
+      />
+      <p class={`${errorClass} hidden`} id="name-error" data-message={MESSAGES.name}></p>
+    </div>
+
+    <div>
+      <label class={labelClass} for="organisation">
+        Organisation or hospital <span class="font-normal text-text-muted">(optional)</span>
+      </label>
+      <input
+        class={`${field} mt-2`}
+        type="text"
+        id="organisation"
+        name="organisation"
+        maxlength="120"
+        autocomplete="organization"
+        aria-describedby="organisation-error"
+      />
+      <p class={`${errorClass} hidden`} id="organisation-error" data-message={MESSAGES.organisation}></p>
+    </div>
+
+    <div>
+      <label class={labelClass} for="email">Email address</label>
+      <input
+        class={`${field} mt-2`}
+        type="email"
+        id="email"
+        name="email"
+        required
+        maxlength="254"
+        autocomplete="email"
+        aria-describedby="email-error"
+      />
+      <p class={`${errorClass} hidden`} id="email-error" data-message={MESSAGES.email}></p>
+    </div>
+
+    <div>
+      <label class={labelClass} for="phone">
+        Phone number <span class="font-normal text-text-muted">(optional)</span>
+      </label>
+      <span class={hintClass} id="phone-hint">Include the country code if you’re outside India.</span>
+      <input
+        class={`${field} mt-2`}
+        type="tel"
+        id="phone"
+        name="phone"
+        maxlength="20"
+        pattern="[+]?[0-9\s-]{7,20}"
+        autocomplete="tel"
+        aria-describedby="phone-hint phone-error"
+      />
+      <p class={`${errorClass} hidden`} id="phone-error" data-message={MESSAGES.phone}></p>
+    </div>
+
+    <div>
+      <label class={labelClass} for="enquiryType">What is your enquiry about?</label>
+      <select
+        class={`${field} mt-2`}
+        id="enquiryType"
+        name="enquiryType"
+        required
+        autocomplete="off"
+        aria-describedby="enquiryType-error"
+      >
+        {ENQUIRY_TYPES.map((value) => <option value={value}>{ENQUIRY_TYPE_LABELS[value]}</option>)}
+      </select>
+      <p class={`${errorClass} hidden`} id="enquiryType-error" data-message={MESSAGES.enquiryType}></p>
+    </div>
+
+    <div>
+      <label class={labelClass} for="product">
+        Product <span class="font-normal text-text-muted">(optional)</span>
+      </label>
+      <select class={`${field} mt-2`} id="product" name="product" autocomplete="off" aria-describedby="product-error">
+        <option value="">No particular product</option>
+        {about.categories.map((category) => <option value={category.id}>{category.name}</option>)}
+      </select>
+      <p class={`${errorClass} hidden`} id="product-error" data-message={MESSAGES.product}></p>
+    </div>
+
+    <div>
+      <label class={labelClass} for="message">Message</label>
+      <span class={hintClass} id="message-hint">
+        Share the products, sizes and quantities you need, and whether you need a customised drape, kit or gown.
+      </span>
+      <textarea
+        class={`${field} mt-2`}
+        id="message"
+        name="message"
+        required
+        minlength="20"
+        maxlength="2000"
+        rows="6"
+        aria-describedby="message-hint message-error"></textarea>
+      <p class={`${errorClass} hidden`} id="message-error" data-message={MESSAGES.message}></p>
+    </div>
+
+    <div>
+      <div class="flex items-start gap-3">
+        <input
+          class="mt-1 size-6 shrink-0 accent-[#643c8e]"
+          type="checkbox"
+          id="consent"
+          name="consent"
+          required
+          aria-describedby="consent-error"
+        />
+        <label class="text-base" for="consent">
+          I agree that Dhrithi Surgical Solutions may use these details to respond to my enquiry, as explained in
+          the <a href="/privacy-policy/">Privacy Policy</a>.
+        </label>
+      </div>
+      <p class={`${errorClass} hidden`} id="consent-error" data-message={MESSAGES.consent}></p>
+    </div>
+
+    {
+      turnstileKey && (
+        <div class="cf-turnstile" data-sitekey={turnstileKey} data-appearance="interaction-only">
+          <noscript>
+            <p class="text-sm text-text-muted">
+              JavaScript is off, so the spam check is skipped. Your enquiry is still checked on our server.
+            </p>
+          </noscript>
+        </div>
+      )
+    }
+
+    <div>
+      <Button type="submit" id="enquiry-submit" arrow>Send enquiry</Button>
+      <p id="submit-status" class="mt-3 text-base font-semibold text-brand-ink-indigo" aria-live="polite"></p>
+    </div>
+  </form>
+
+  <!-- Success panel, revealed by the enhancement script. -->
+  <div id="enquiry-success" class="hidden rounded-card border-2 border-success bg-success-bg p-6">
+    <h3 id="enquiry-success-heading" tabindex="-1" class="text-2xl text-success">
+      Thank you — your enquiry has been sent.
+    </h3>
+    <p class="mt-3 text-base">We have your details and will be in touch.</p>
+    <div class="mt-6 flex flex-wrap gap-3">
+      <Button href="/products/" variant="secondary">Browse products</Button>
+      <Button href="/" variant="secondary">Back to home</Button>
+    </div>
+  </div>
+
+  <p id="privacy-summary" class="mt-8 text-sm text-text-muted">
+    We use your details only to reply to this enquiry. We keep them for up to [12 months] unless we start working
+    together, and we never sell them. To access, correct or delete your details, or to withdraw consent, email
+    <a class="break-anywhere" href={`mailto:${contact.email}`}>{contact.email}</a>. Read our
+    <a href="/privacy-policy/">Privacy Policy</a>.
+  </p>
+</div>
+
+<style>
+  /* Honeypot: off-screen rather than display:none, so naive bots still fill it. */
+  .hp-wrap {
+    position: absolute;
+    left: -9999px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  /* Native invalid styling is suppressed; errors are announced in text instead. */
+  #enquiry-form input:user-invalid,
+  #enquiry-form textarea:user-invalid,
+  #enquiry-form [aria-invalid="true"] {
+    border-color: var(--color-danger);
+  }
+</style>
+
+<script src="../scripts/contact-form.ts"></script>
+{turnstileKey && <script is:inline async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>}

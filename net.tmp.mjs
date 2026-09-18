@@ -1,0 +1,14 @@
+import { chromium } from "playwright-core";
+const b = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium" });
+const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+const bad = [];
+p.on("response", (r) => { if (r.status() >= 400) bad.push(`${r.status()} ${r.url()}`); });
+p.on("console", (m) => { if (m.type() === "error") console.log("CONSOLE ERROR:", m.text()); });
+p.on("pageerror", (e) => console.log("PAGEERROR:", e.message));
+await p.goto("http://localhost:4321/", { waitUntil: "networkidle" });
+await p.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+await p.waitForTimeout(1500);
+const imgs = await p.$$eval("img", (els) => els.map((e) => ({ src: e.currentSrc || e.src, w: e.naturalWidth, h: e.naturalHeight, alt: e.alt.slice(0, 30) })));
+console.log("IMAGES:"); for (const i of imgs) console.log(" ", i.w + "x" + i.h, i.src.split("/").pop(), "|", i.alt);
+console.log("BAD RESPONSES:", bad.length ? bad : "none");
+await b.close();

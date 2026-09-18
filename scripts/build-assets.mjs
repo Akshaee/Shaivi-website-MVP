@@ -14,7 +14,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 import subsetFont from "subset-font";
-import { textPath, ttfBuffer } from "./lib/text-path.mjs";
+import { textPath, textSvg, ttfBuffer } from "./lib/text-path.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const p = (...s) => path.join(root, ...s);
@@ -64,11 +64,19 @@ const markSvg = (fill) =>
 async function lockup({ horizontal, wordFill, taglineFill, markFill }) {
   const WORD = 64; // wordmark cap size
   const TAG = 15.5;
-  const word = await textPath("exo2-600", "SHAIVI", { size: WORD, tracking: 0.055, x: 0, y: 0 });
-  const tm = await textPath("exo2-600", "™", { size: WORD * 0.3, tracking: 0, x: 0, y: 0 });
-  const tag = await textPath("opensans-600", "SAFETY MEETS CARE", { size: TAG, tracking: 0.22, x: 0, y: 0 });
 
-  const textW = Math.max(word.width + 4 + tm.width, tag.width);
+  const measureOnly = async (key, str, size, tracking) => (await textPath(key, str, { size, tracking })).width;
+  const wordW = await measureOnly("exo2-600", "SHAIVI", WORD, 0.055);
+  const tmW = await measureOnly("exo2-600", "\u2122", WORD * 0.3, 0);
+  const tagW = await measureOnly("opensans-600", "SAFETY MEETS CARE", TAG, 0.22);
+  const textW = Math.max(wordW + 4 + tmW, tagW);
+
+  const word = async (x, y) =>
+    (await textSvg("exo2-600", "SHAIVI", { size: WORD, tracking: 0.055, x, y }, `fill="${wordFill}"`)).svg;
+  const tm = async (x, y) =>
+    (await textSvg("exo2-600", "\u2122", { size: WORD * 0.3, x, y }, `fill="${wordFill}"`)).svg;
+  const tag = async (x, y) =>
+    (await textSvg("opensans-600", "SAFETY MEETS CARE", { size: TAG, tracking: 0.22, x, y }, `fill="${taglineFill}"`)).svg;
 
   if (horizontal) {
     const markSize = 60;
@@ -84,9 +92,9 @@ async function lockup({ horizontal, wordFill, taglineFill, markFill }) {
       svg:
         `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="SHAIVI — Safety Meets Care">` +
         `<g transform="translate(${mx} 8) scale(${markSize / 64})"><path fill="${markFill}" fill-rule="evenodd" d="${SHIELD}${CROSS}"/></g>` +
-        `<path fill="${wordFill}" transform="translate(${tx} ${baseline})" d="${word.d}"/>` +
-        `<path fill="${wordFill}" transform="translate(${tx + word.width + 4} ${baseline - WORD * 0.52})" d="${tm.d}"/>` +
-        `<path fill="${taglineFill}" transform="translate(${tx} ${baseline + 22})" d="${tag.d}"/>` +
+        (await word(tx, baseline)) +
+        (await tm(tx + wordW + 4, baseline - WORD * 0.52)) +
+        (await tag(tx, baseline + 22)) +
         `</svg>`,
     };
   }
@@ -95,15 +103,16 @@ async function lockup({ horizontal, wordFill, taglineFill, markFill }) {
   const W = Math.ceil(Math.max(textW, markSize)) + 16;
   const H = 210;
   const cx = W / 2;
+  const wordX = cx - (wordW + 4 + tmW) / 2;
   return {
     w: W,
     h: H,
     svg:
       `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="SHAIVI — Safety Meets Care">` +
       `<g transform="translate(${cx - markSize / 2} 6) scale(${markSize / 64})"><path fill="${markFill}" fill-rule="evenodd" d="${SHIELD}${CROSS}"/></g>` +
-      `<path fill="${wordFill}" transform="translate(${cx - (word.width + 4 + tm.width) / 2} 160)" d="${word.d}"/>` +
-      `<path fill="${wordFill}" transform="translate(${cx + (word.width + 4 + tm.width) / 2 - tm.width} ${160 - WORD * 0.52})" d="${tm.d}"/>` +
-      `<path fill="${taglineFill}" transform="translate(${cx - tag.width / 2} 188)" d="${tag.d}"/>` +
+      (await word(wordX, 160)) +
+      (await tm(wordX + wordW + 4, 160 - WORD * 0.52)) +
+      (await tag(cx - tagW / 2, 188)) +
       `</svg>`,
   };
 }
@@ -117,27 +126,27 @@ async function placeholder({ w, h, key, label, alpha = false, tint = "light" }) 
   const subFill = dark ? "#ded7e9" : C.neutral600;
   const base = Math.min(w, h);
 
-  const title = await textPath("exo2-700", "PHOTO PENDING", {
+  const title = await textSvg("exo2-700", "PHOTO PENDING", {
     size: base * 0.062,
     tracking: 0.12,
     x: w / 2,
     y: h / 2 + base * 0.11,
     anchor: "middle",
-  });
-  const sub = await textPath("exo2-400", key, {
+  }, `fill="${textFill}"`);
+  const sub = await textSvg("exo2-400", key, {
     size: base * 0.042,
     tracking: 0.02,
     x: w / 2,
     y: h / 2 + base * 0.185,
     anchor: "middle",
-  });
-  const note = await textPath("opensans-400", label, {
+  }, `fill="${subFill}"`);
+  const note = await textSvg("opensans-400", label, {
     size: base * 0.03,
     tracking: 0.04,
     x: w / 2,
     y: h / 2 + base * 0.25,
     anchor: "middle",
-  });
+  }, `fill="${subFill}"`);
 
   const svg =
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}">` +
@@ -145,8 +154,12 @@ async function placeholder({ w, h, key, label, alpha = false, tint = "light" }) 
     `<pattern id="h" width="24" height="24" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">` +
     `<line x1="0" y1="0" x2="0" y2="24" stroke="${stroke}" stroke-opacity="0.10" stroke-width="8"/></pattern>` +
     `</defs>` +
-    (alpha ? "" : `<rect width="${w}" height="${h}" fill="${bg}"/>`) +
-    `<rect width="${w}" height="${h}" fill="url(#h)"${alpha ? ' fill-opacity="0.55"' : ""}/>` +
+    // Cut-outs are transparent, but a translucent plate keeps the "pending" notice
+    // legible when the image sits on a violet panel rather than on white.
+    (alpha
+      ? `<rect x="${base * 0.02}" y="${base * 0.02}" width="${w - base * 0.04}" height="${h - base * 0.04}" rx="${base * 0.05}" fill="#ffffff" fill-opacity="0.9"/>`
+      : `<rect width="${w}" height="${h}" fill="${bg}"/>`) +
+    `<rect width="${w}" height="${h}" fill="url(#h)"/>` +
     `<rect x="${base * 0.03}" y="${base * 0.03}" width="${w - base * 0.06}" height="${h - base * 0.06}" ` +
     `fill="none" stroke="${stroke}" stroke-opacity="0.5" stroke-width="${Math.max(2, base * 0.006)}" ` +
     `stroke-dasharray="${base * 0.05} ${base * 0.03}" rx="${base * 0.04}"/>` +
@@ -155,9 +168,9 @@ async function placeholder({ w, h, key, label, alpha = false, tint = "light" }) 
     `fill="none" stroke="${stroke}" stroke-opacity="0.75" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">` +
     `<path d="M3 9a2 2 0 0 1 2-2h2.2l1.2-2h6.8l1.2 2H21a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>` +
     `<circle cx="13" cy="13.5" r="4"/></g>` +
-    `<path fill="${textFill}" d="${title.d}"/>` +
-    `<path fill="${subFill}" d="${sub.d}"/>` +
-    `<path fill="${subFill}" d="${note.d}"/>` +
+    title.svg +
+    sub.svg +
+    note.svg +
     `</svg>`;
 
   const img = sharp(Buffer.from(svg));
@@ -276,15 +289,14 @@ write(
 {
   const w = 1200;
   const h = 630;
-  const word = await textPath("exo2-600", "SHAIVI", { size: 116, tracking: 0.055, x: w / 2, y: 330, anchor: "middle" });
-  const tag = await textPath("opensans-600", "SAFETY MEETS CARE", { size: 30, tracking: 0.22, x: w / 2, y: 384, anchor: "middle" });
-  const line = await textPath("exo2-400", "Surgical disposables · ISO 13485 certified · Bhatkal, Karnataka", {
-    size: 30,
-    tracking: 0.01,
-    x: w / 2,
-    y: 500,
-    anchor: "middle",
-  });
+  const word = await textSvg("exo2-600", "SHAIVI", { size: 116, tracking: 0.055, x: w / 2, y: 330, anchor: "middle" }, 'fill="#ffffff"');
+  const tag = await textSvg("opensans-600", "SAFETY MEETS CARE", { size: 30, tracking: 0.22, x: w / 2, y: 384, anchor: "middle" }, 'fill="#ded7e9"');
+  const line = await textSvg(
+    "exo2-400",
+    "Surgical disposables \u00b7 ISO 13485 certified \u00b7 Bhatkal, Karnataka",
+    { size: 30, tracking: 0.01, x: w / 2, y: 500, anchor: "middle" },
+    'fill="#efeaf6"',
+  );
   const svg =
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}">` +
     `<defs><linearGradient id="d" x1="0" x2="1"><stop offset="0" stop-color="#34419a"/><stop offset=".45" stop-color="#6042a7"/>` +
@@ -292,9 +304,9 @@ write(
     `<rect width="${w}" height="${h}" fill="#491568"/>` +
     `<rect width="${w}" height="${h}" fill="url(#d)" opacity="0.92"/>` +
     `<g transform="translate(${w / 2 - 54} 120) scale(1.7)"><path fill="#ffffff" fill-rule="evenodd" d="${SHIELD}${CROSS}"/></g>` +
-    `<path fill="#ffffff" d="${word.d}"/><path fill="#ded7e9" d="${tag.d}"/>` +
+    word.svg + tag.svg +
     `<rect x="${w / 2 - 90}" y="440" width="180" height="3" rx="1.5" fill="#ffffff" opacity="0.6"/>` +
-    `<path fill="#efeaf6" d="${line.d}"/></svg>`;
+    line.svg + `</svg>`;
   write("public/og/shaivi-og.jpg", await sharp(Buffer.from(svg)).jpeg({ quality: 88, mozjpeg: true }).toBuffer());
 }
 
@@ -326,15 +338,15 @@ for (const photo of PHOTOS) {
 // Emblem: a real brand asset rather than a pending photograph.
 {
   const size = 480;
-  const name = await textPath("exo2-600", "DHRITHI", { size: 46, tracking: 0.16, x: size / 2, y: 372, anchor: "middle" });
-  const sub = await textPath("opensans-600", "SURGICAL SOLUTIONS", { size: 20, tracking: 0.16, x: size / 2, y: 408, anchor: "middle" });
+  const name = await textSvg("exo2-600", "DHRITHI", { size: 46, tracking: 0.16, x: size / 2, y: 372, anchor: "middle" }, `fill="${C.inkIndigo}"`);
+  const sub = await textSvg("opensans-600", "SURGICAL SOLUTIONS", { size: 20, tracking: 0.16, x: size / 2, y: 408, anchor: "middle" }, `fill="${C.purple}"`);
   const svg =
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">` +
     `<rect width="${size}" height="${size}" fill="#ffffff"/>` +
     `<circle cx="240" cy="200" r="150" fill="none" stroke="${C.purple}" stroke-width="6"/>` +
     `<circle cx="240" cy="200" r="136" fill="${C.royal50}"/>` +
     `<g transform="translate(160 120) scale(2.5)"><path fill="${C.red}" fill-rule="evenodd" d="${SHIELD}${CROSS}"/></g>` +
-    `<path fill="${C.inkIndigo}" d="${name.d}"/><path fill="${C.purple}" d="${sub.d}"/></svg>`;
+    name.svg + sub.svg + `</svg>`;
   write("src/assets/images/dhrithi-emblem.png", await sharp(Buffer.from(svg)).png().toBuffer());
 }
 
@@ -390,19 +402,24 @@ console.log("Brand board");
     ["ink", C.ink],
   ];
   let body = `<rect width="${w}" height="${h}" fill="#ffffff"/>`;
-  const title = await textPath("exo2-600", "SHAIVI brand board", { size: 52, x: 72, y: 96 });
-  body += `<path fill="${C.plum}" d="${title.d}"/>`;
-  const note = await textPath("opensans-400", "Generated from the tokens in src/styles/global.css — confirm against the designer's source files.", { size: 22, x: 72, y: 132 });
-  body += `<path fill="${C.neutral600}" d="${note.d}"/>`;
+  const title = await textSvg("exo2-600", "SHAIVI brand board", { size: 52, x: 72, y: 96 }, `fill="${C.plum}"`);
+  body += title.svg;
+  const note = await textSvg(
+    "opensans-400",
+    "Generated from the tokens in src/styles/global.css \u2014 confirm against the designer's source files.",
+    { size: 22, x: 72, y: 132 },
+    `fill="${C.neutral600}"`,
+  );
+  body += note.svg;
 
   for (let i = 0; i < swatches.length; i++) {
     const [name, hex] = swatches[i];
     const x = 72 + (i % 6) * 246;
     const y = 180 + Math.floor(i / 6) * 200;
-    const label = await textPath("exo2-600", name, { size: 20, x, y: y + 158 });
-    const val = await textPath("opensans-400", hex.toUpperCase(), { size: 18, x, y: y + 182 });
+    const label = await textSvg("exo2-600", name, { size: 20, x, y: y + 158 }, `fill="${C.ink}"`);
+    const val = await textSvg("opensans-400", hex.toUpperCase(), { size: 18, x, y: y + 182 }, `fill="${C.neutral600}"`);
     body += `<rect x="${x}" y="${y}" width="216" height="140" rx="16" fill="${hex}"/>`;
-    body += `<path fill="${C.ink}" d="${label.d}"/><path fill="${C.neutral600}" d="${val.d}"/>`;
+    body += label.svg + val.svg;
   }
 
   const grads = [
@@ -420,17 +437,81 @@ console.log("Brand board");
       stops.map((s, j) => `<stop offset="${(j / (stops.length - 1)).toFixed(3)}" stop-color="${s}"/>`).join("") +
       `</linearGradient>`;
     const y = 620 + i * 84;
-    const label = await textPath("exo2-600", `gradient-${name}`, { size: 20, x: 72, y: y + 40 });
-    body += `<path fill="${C.ink}" d="${label.d}"/>`;
+    const label = await textSvg("exo2-600", `gradient-${name}`, { size: 20, x: 72, y: y + 40 }, `fill="${C.ink}"`);
+    body += label.svg;
     body += `<rect x="330" y="${y}" width="1190" height="56" rx="12" fill="url(#g${i})"/>`;
   }
 
-  const typeTitle = await textPath("exo2-600", "Exo 2 600 — headings and body", { size: 34, x: 72, y: 1060 });
-  const script = await textPath("dancing-600", "Elevating", { size: 54, x: 1020, y: 1064 });
-  body += `<path fill="${C.inkIndigo}" d="${typeTitle.d}"/><path fill="${C.plum}" d="${script.d}"/>`;
+  const typeTitle = await textSvg("exo2-600", "Exo 2 600 \u2014 headings and body", { size: 34, x: 72, y: 1060 }, `fill="${C.inkIndigo}"`);
+  const script = await textSvg("dancing-600", "Elevating", { size: 54, x: 1020, y: 1064 }, `fill="${C.plum}"`);
+  body += typeTitle.svg + script.svg;
 
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}"><defs>${defs}</defs>${body}</svg>`;
   write("docs/brand-board.png", await sharp(Buffer.from(svg)).png().toBuffer());
+}
+
+console.log("Verifying rendered text");
+{
+  // Text is vectorised, so a renderer or font bug that drops glyphs fails
+  // silently. Rasterise probe strings and check both the overall ink width and
+  // that no interior gap is wide enough to be a missing character.
+  const probes = [
+    ["exo2-400", "surgical-gown-model", 0.02],
+    ["exo2-400", "abcdefghijklmnopqrstuvwxyz0123456789", 0.01],
+    ["exo2-600", "SHAIVI brand-magenta", 0.055],
+    ["exo2-700", "PHOTO PENDING", 0.12],
+    ["opensans-600", "SAFETY MEETS CARE", 0.22],
+    ["opensans-400", "Innovating safety", 0.04],
+    ["dancing-600", "Elevating", 0],
+  ];
+
+  for (const [font, str, tracking] of probes) {
+    const size = 48;
+    const { svg: glyphs, width } = await textSvg(font, str, { size, tracking, x: 40, y: 90 }, 'fill="#000000"');
+    const canvasW = Math.ceil(width) + 120;
+    const doc =
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${canvasW} 140" width="${canvasW}" height="140">` +
+      `<rect width="${canvasW}" height="140" fill="#ffffff"/>${glyphs}</svg>`;
+    const { data, info } = await sharp(Buffer.from(doc)).greyscale().raw().toBuffer({ resolveWithObject: true });
+
+    const inked = [];
+    for (let x = 0; x < info.width; x++) {
+      let hit = false;
+      for (let y = 0; y < info.height; y++) {
+        if (data[y * info.width + x] < 200) {
+          hit = true;
+          break;
+        }
+      }
+      inked.push(hit);
+    }
+
+    const first = inked.indexOf(true);
+    const last = inked.lastIndexOf(true);
+    const inkWidth = last - first;
+
+    // Side bearings and the trailing tracking space mean ink is always a little
+    // narrower than the advance width; under 80% means glyphs were lost.
+    if (!(inkWidth > width * 0.8)) {
+      throw new Error(`Text truncated: "${str}" in ${font} drew ${inkWidth}px of an expected ${Math.round(width)}px`);
+    }
+
+    // The widest blank run inside the ink should be an inter-word space at most.
+    let gap = 0;
+    let run = 0;
+    for (let x = first; x <= last; x++) {
+      run = inked[x] ? 0 : run + 1;
+      if (run > gap) gap = run;
+    }
+    // A real word space is the space advance plus one tracking step, plus the
+    // side bearings either side of it; anything much wider is a lost glyph.
+    const spaceWidth = str.includes(" ") ? (await textSvg(font, " ", { size })).width + tracking * size : 0;
+    const allowed = Math.max(size * 0.45, spaceWidth * 1.9);
+    if (gap > allowed) {
+      throw new Error(`Glyph missing from "${str}" in ${font}: ${gap}px gap exceeds ${Math.round(allowed)}px`);
+    }
+  }
+  console.log("  \u00b7 all probes rendered in full");
 }
 
 console.log("\nDone. Placeholder photographs are marked PHOTO PENDING — swap in the client's originals.");

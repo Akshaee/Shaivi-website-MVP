@@ -1,0 +1,141 @@
+---
+import { Picture } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import RibbonLabel from "../components/RibbonLabel.astro";
+import OrbCallout from "../components/OrbCallout.astro";
+import LeaderCard from "../components/LeaderCard.astro";
+import CtaBand from "../components/CtaBand.astro";
+import Icon from "../components/Icon.astro";
+import content from "../data/content.json";
+import { photos, altFor } from "../lib/images";
+import { breadcrumbList, aboutPage, managingDirector, organization } from "../lib/schema";
+import type { IconName } from "../components/Icon.astro";
+
+const { about, infrastructure, leadership } = content;
+const md = leadership.people[0]!;
+
+const breadcrumbs = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about/" },
+];
+---
+
+<BaseLayout
+  seoKey="/about/"
+  breadcrumbs={breadcrumbs}
+  schema={[
+    organization(Astro.site),
+    breadcrumbList(breadcrumbs, Astro.site),
+    aboutPage(Astro.site),
+    managingDirector(Astro.site),
+  ]}
+>
+  <!-- 1 · Page hero ------------------------------------------------------ -->
+  <section class="container-page pt-8 pb-4 lg:pt-12" aria-labelledby="about-heading">
+    <div class="grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
+      <div class="lg:col-span-6">
+        <RibbonLabel text={about.label} />
+        <h1 id="about-heading" class="mt-4 text-4xl text-brand-ink-indigo">{about.heading}</h1>
+        <div class="mt-6 flex flex-col gap-5">
+          {about.paragraphs.map((paragraph) => <p class="prose-measure text-lg text-text-muted">{paragraph}</p>)}
+        </div>
+      </div>
+      <div class="lg:col-span-6">
+        <Picture
+          src={photos["factory-bhatkal"]}
+          alt={altFor("factory-bhatkal")}
+          widths={[480, 720, 1024, 1400]}
+          sizes="(min-width: 1024px) 50vw, 92vw"
+          formats={["avif", "webp"]}
+          fallbackFormat="jpg"
+          quality={64}
+          priority
+          class="w-full rounded-photo object-cover"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · Manufacturers of ----------------------------------------------- -->
+  <section class="bg-surface-tint" aria-labelledby="manufacturers-heading">
+    <div class="container-page section-y">
+      <div class="grid items-center gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-6">
+          <h2 id="manufacturers-heading" class="text-3xl text-gradient">{about.manufacturersHeading}</h2>
+          <ul class="mt-7 flex list-none flex-col gap-2 p-0">
+            {
+              about.categories.map((category) => (
+                <li>
+                  <a
+                    href={`/products/#${category.id}`}
+                    class="flex min-h-[48px] items-center gap-3 rounded-card border border-border bg-white px-5 py-3 font-semibold text-brand-ink-indigo no-underline shadow-soft hover:border-royal-300"
+                  >
+                    <Icon name={category.icon as IconName} size={22} class="shrink-0 text-brand-purple" />
+                    {category.name}
+                    <Icon name="chevron-right" size={18} class="ml-auto shrink-0 text-brand-purple" />
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <div class="lg:col-span-6">
+          <OrbCallout text={about.customisation} as="p" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · Infrastructure -------------------------------------------------- -->
+  <section id="infrastructure" class="container-page section-y" aria-labelledby="infrastructure-heading">
+    <SectionHeading
+      id="infrastructure-heading"
+      ribbon={infrastructure.label}
+      heading={infrastructure.heading}
+      intro={infrastructure.intro}
+      gradient
+    />
+    <dl class="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2">
+      {
+        infrastructure.items.map((item) => (
+          <div class="flex h-full flex-col rounded-card border border-border bg-white p-6 shadow-soft">
+            <Icon name={item.icon as IconName} size={28} class="text-brand-purple" />
+            <p class="mt-4 text-2xl font-bold tabular-nums text-brand-ink-indigo">{item.stat}</p>
+            <dt class="mt-1">
+              <h3 class="text-xl text-brand-plum">{item.title}</h3>
+            </dt>
+            <dd class="mt-2 ml-0 text-base text-text-muted">{item.text}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <!-- 4 · Leadership ------------------------------------------------------ -->
+  <section id="leadership" class="container-page" aria-labelledby="leadership-heading">
+    <div class="violet-panel overflow-hidden px-6 py-12 lg:px-12 lg:py-16">
+      <div class="grid items-center gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-7">
+          <RibbonLabel text={leadership.label} />
+          <h2 id="leadership-heading" class="mt-4 text-3xl text-white">{leadership.heading}</h2>
+          <p class="mt-5 prose-measure text-lg text-royal-100">{leadership.text}</p>
+        </div>
+        <div class="lg:col-span-5">
+          <LeaderCard
+            image={photos["md-sharath-kumar-shetty"]}
+            alt={altFor("md-sharath-kumar-shetty")}
+            name={md.name}
+            role={md.role}
+            onDark
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="h-16 lg:h-24"></div>
+
+  <!-- 5 · CTA band -------------------------------------------------------- -->
+  <CtaBand />
+</BaseLayout>

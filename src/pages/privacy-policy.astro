@@ -1,0 +1,159 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import content from "../data/content.json";
+import { breadcrumbList, organization } from "../lib/schema";
+
+const { contact, company } = content;
+
+const breadcrumbs = [
+  { label: "Home", href: "/" },
+  { label: "Privacy Policy", href: "/privacy-policy/" },
+];
+
+const lastUpdated = new Date().toLocaleDateString("en-IN", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+
+const h2 = "mt-12 text-2xl text-brand-plum";
+const p = "mt-4 prose-measure text-base text-text";
+const ul = "mt-4 flex list-disc flex-col gap-2 pl-6 prose-measure text-base text-text";
+---
+
+<!-- Template: must be reviewed by the client's legal adviser before launch. -->
+<BaseLayout
+  seoKey="/privacy-policy/"
+  breadcrumbs={breadcrumbs}
+  schema={[organization(Astro.site), breadcrumbList(breadcrumbs, Astro.site)]}
+>
+  <article class="container-page section-y">
+    <div class="max-w-[46rem]">
+      <p class="inline-flex items-center rounded-full bg-royal-100 px-4 py-1.5 text-sm font-semibold text-brand-plum">
+        Draft – pending legal review
+      </p>
+      <h1 class="mt-5 text-4xl text-brand-ink-indigo">Privacy Policy</h1>
+      <p class="mt-4 text-base text-text-muted">Last updated: {lastUpdated}</p>
+
+      <h2 class={h2}>Who we are</h2>
+      <p class={p}>
+        This website is operated by {company.legalName} ({company.alsoKnownAs}, brand name {company.brand}),
+        {contact.addressLines.slice(1).join(" ")} We are the data fiduciary for the personal data described below.
+        You can reach us at <a class="break-anywhere" href={`mailto:${contact.email}`}>{contact.email}</a> or on
+        {contact.phones.map((phone, i) => (
+          <>
+            {i > 0 ? ", " : ""}
+            <a href={phone.tel}>{phone.display}</a>
+          </>
+        ))}.
+      </p>
+
+      <h2 class={h2}>What personal data we collect</h2>
+      <p class={p}>We collect only what the enquiry form asks for:</p>
+      <ul class={ul}>
+        <li>your full name;</li>
+        <li>your email address;</li>
+        <li>your organisation or hospital, if you choose to give it;</li>
+        <li>your phone number, if you choose to give it;</li>
+        <li>the type of enquiry and the product you select;</li>
+        <li>the message you write.</li>
+      </ul>
+      <p class={p}>
+        Our hosting provider also keeps standard server logs (such as IP address, timestamp and the page requested)
+        for security and reliability. Our own enquiry logs record only a one-way hashed form of your IP address, never
+        the address itself, and never the contents of your message.
+      </p>
+
+      <h2 class={h2}>Why we use it</h2>
+      <p class={p}>
+        We use your details for two purposes only: to read and respond to your enquiry, and to keep this website
+        secure and available — for example by detecting and limiting automated abuse of the form. We do not profile
+        you, advertise to you, or use your details for any other purpose.
+      </p>
+
+      <h2 class={h2}>Consent and how to withdraw it</h2>
+      <p class={p}>
+        We ask for your consent before you send the form, and you can withdraw it at any time — as easily as you gave
+        it — by emailing <a class="break-anywhere" href={`mailto:${contact.email}`}>{contact.email}</a>. Withdrawing
+        consent does not affect anything we did lawfully before you withdrew it. If you withdraw consent we will stop
+        using your details and delete them, unless we are required to keep them by law.
+      </p>
+
+      <h2 class={h2}>How long we keep it</h2>
+      <p class={p}>
+        We keep enquiry details for [12 months after our last contact — client to confirm], unless we begin working
+        together, in which case they are kept for as long as that relationship requires. After that they are deleted.
+      </p>
+
+      <h2 class={h2}>Who we share it with</h2>
+      <p class={p}>
+        We share your details only with service providers acting on our behalf — our website hosting provider and, once
+        enabled, our email delivery provider — and only so that they can help us respond to you. We never sell your
+        personal data, and we never use it for advertising.
+      </p>
+
+      <h2 class={h2}>Where it is stored</h2>
+      <p class={p}>
+        Your details are processed and stored by our hosting provider in [hosting region — client to confirm]. Where
+        data is transferred outside India, we rely on our providers' contractual safeguards.
+      </p>
+
+      <h2 class={h2}>How we protect it</h2>
+      <p class={p}>
+        This site is served only over HTTPS. The enquiry form validates and sanitises what it receives, limits how
+        often it can be submitted, and applies a Content Security Policy and other security headers. Access to
+        enquiries is limited to the people who need it to reply to you.
+      </p>
+
+      <h2 class={h2}>Your rights</h2>
+      <p class={p}>Subject to applicable law, you may ask us to:</p>
+      <ul class={ul}>
+        <li>give you access to the personal data we hold about you;</li>
+        <li>correct, complete or update it;</li>
+        <li>erase it;</li>
+        <li>deal with a grievance about how we have handled it;</li>
+        <li>record a nominee who may exercise these rights on your behalf if you die or become incapacitated.</li>
+      </ul>
+      <p class={p}>
+        To exercise any of these, email <a class="break-anywhere" href={`mailto:${contact.email}`}>{contact.email}</a>.
+      </p>
+
+      <h2 class={h2}>Cookies and analytics</h2>
+      <p class={p}>
+        This website sets no cookies and uses no analytics, advertising or tracking services. Nothing is loaded from a
+        third-party server.
+      </p>
+
+      <h2 class={h2}>Children’s data</h2>
+      <p class={p}>
+        This is a business-to-business website and is not directed at children. We do not knowingly collect personal
+        data of anyone under 18. If you believe a child has sent us their details, contact us and we will delete them.
+      </p>
+
+      <h2 class={h2}>Grievance Officer</h2>
+      <p class={p}>
+        If you have a concern about how we handle your personal data, contact our Grievance Officer: [name and email —
+        client to appoint]. We will acknowledge your complaint and respond within the period required by law.
+      </p>
+
+      <h2 class={h2}>Complaints to the Data Protection Board of India</h2>
+      <p class={p}>
+        If we do not resolve your grievance, you may complain to the Data Protection Board of India under the Digital
+        Personal Data Protection Act, 2023 and the Digital Personal Data Protection Rules, 2025.
+      </p>
+
+      <h2 class={h2}>Changes to this policy</h2>
+      <p class={p}>
+        We may update this policy as our services or the law change. The date at the top shows when it was last
+        revised, and material changes will be highlighted on this page.
+      </p>
+
+      <p class="mt-12 rounded-card border border-border bg-surface-tint p-5 text-sm text-text-muted">
+        This policy is a template prepared for review. It must be checked by the client’s legal adviser against the
+        Digital Personal Data Protection Act, 2023 and the DPDP Rules, 2025 (whose notice and consent obligations
+        apply from 13 May 2027), and against the Information Technology Act SPDI Rules, which continue to apply until
+        then.
+      </p>
+    </div>
+  </article>
+</BaseLayout>

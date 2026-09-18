@@ -1,0 +1,199 @@
+---
+import { Picture } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Button from "../components/Button.astro";
+import FeatureChips from "../components/FeatureChips.astro";
+import OrbCallout from "../components/OrbCallout.astro";
+import DetailsOnRequest from "../components/DetailsOnRequest.astro";
+import CtaBand from "../components/CtaBand.astro";
+import Icon from "../components/Icon.astro";
+import content from "../data/content.json";
+import { cutouts, altFor } from "../lib/images";
+import { breadcrumbList, collectionPage, organization } from "../lib/schema";
+import type { IconName } from "../components/Icon.astro";
+
+const { about, gowns } = content;
+
+const breadcrumbs = [
+  { label: "Home", href: "/" },
+  { label: "Products", href: "/products/" },
+];
+
+// The gowns category is the one the brochure describes; the rest use the
+// "details on request" pattern until the client supplies copy.
+const gownsCategory = about.categories.find((c) => c.id === gowns.categoryId)!;
+const otherCategories = about.categories.filter((c) => c.id !== gowns.categoryId);
+const drapeKits = otherCategories[0]!;
+const gridCategories = otherCategories.slice(1);
+
+const reinforced = gowns.types.find((t) => t.id === "reinforced-bvb-surgical-gowns")!;
+---
+
+<BaseLayout
+  seoKey="/products/"
+  breadcrumbs={breadcrumbs}
+  schema={[organization(Astro.site), breadcrumbList(breadcrumbs, Astro.site), collectionPage(Astro.site)]}
+>
+  <!-- 1 · Page hero ------------------------------------------------------ -->
+  <section class="container-page pt-8 pb-4 lg:pt-12" aria-labelledby="products-heading">
+    <p class="font-accent text-sm font-semibold uppercase tracking-eyebrow text-brand-magenta">
+      {about.manufacturersHeading}
+    </p>
+    <h1 id="products-heading" class="mt-4 text-4xl text-brand-ink-indigo">
+      Surgical Disposables &amp; Protective Products
+    </h1>
+    <p class="mt-6 prose-measure text-lg text-text-muted">{about.customisation}</p>
+    <nav aria-label="Product categories" class="mt-8">
+      <ul class="m-0 flex list-none flex-wrap gap-2.5 p-0">
+        {
+          about.categories.map((category) => (
+            <li>
+              <a
+                href={`#${category.id}`}
+                class="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-royal-200 bg-royal-50 px-4 text-sm font-semibold text-brand-plum no-underline hover:border-royal-300"
+              >
+                <Icon name={category.icon as IconName} size={16} />
+                {category.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </section>
+
+  <!-- 2 · Gowns ----------------------------------------------------------- -->
+  <section id={gownsCategory.id} class="container-page mt-10 scroll-mt-24" aria-labelledby="gowns-heading">
+    <div class="violet-panel overflow-hidden px-6 py-12 lg:px-12 lg:py-16">
+      <div class="grid items-center gap-10 lg:grid-cols-12">
+        <div class="lg:col-span-7">
+          <h2 id="gowns-heading" class="text-3xl text-white">{gowns.heading}</h2>
+          <div class="mt-5 flex flex-col gap-4">
+            {gowns.intro.map((paragraph) => <p class="prose-measure text-lg text-royal-100">{paragraph}</p>)}
+          </div>
+        </div>
+        <div class="lg:col-span-5">
+          <Picture
+            src={cutouts["surgical-gown-model"]}
+            alt={altFor("surgical-gown-model")}
+            widths={[320, 480, 640, 800]}
+            sizes="(min-width: 1024px) 30vw, 70vw"
+            formats={["avif", "webp"]}
+            fallbackFormat="webp"
+            quality={66}
+            priority
+            class="mx-auto w-full max-w-[22rem] object-contain"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-10">
+      <FeatureChips items={gowns.features} label="Gown features" />
+    </div>
+
+    <div class="mt-10">
+      <h3 id="gown-fabrics" class="text-xl text-brand-plum">{gowns.fabricsLabel}</h3>
+      <FeatureChips items={gowns.fabrics} label="Gown fabrics" class="mt-4" />
+    </div>
+
+    <!-- Gown types -->
+    <div class="mt-14 flex flex-col gap-14">
+      {
+        gowns.types
+          .filter((type) => type.id !== reinforced.id)
+          .map((type) => (
+            <article id={type.id} class="scroll-mt-24">
+              <h3 class="text-2xl text-brand-plum">{type.name}</h3>
+              {type.lead && <p class="mt-4 prose-measure text-lg font-semibold text-brand-ink-indigo">{type.lead}</p>}
+              <div class="mt-4 flex flex-col gap-4">
+                {type.paragraphs.map((paragraph) => (
+                  <p class="prose-measure text-base text-text-muted">{paragraph}</p>
+                ))}
+              </div>
+            </article>
+          ))
+      }
+
+      <article id={reinforced.id} class="scroll-mt-24">
+        <div class="grid items-start gap-10 lg:grid-cols-12">
+          <div class="lg:col-span-7">
+            <h3 class="text-2xl text-brand-plum">{reinforced.name}</h3>
+            <p class="mt-2 text-lg font-semibold text-brand-magenta">{reinforced.subheading}</p>
+            <div class="mt-4 flex flex-col gap-4">
+              {reinforced.paragraphs.map((paragraph) => <p class="prose-measure text-base text-text-muted">{paragraph}</p>)}
+            </div>
+          </div>
+          <div class="lg:col-span-5">
+            <Picture
+              src={cutouts["surgical-team-face-shields"]}
+              alt={altFor("surgical-team-face-shields")}
+              widths={[420, 640, 900]}
+              sizes="(min-width: 1024px) 40vw, 92vw"
+              formats={["avif", "webp"]}
+              fallbackFormat="webp"
+              loading="lazy"
+              class="w-full rounded-photo object-contain"
+            />
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <Button
+      href={`/contact/?enquiry=product&product=${gownsCategory.id}`}
+      class="mt-12"
+      arrow
+    >
+      Request gown specifications
+    </Button>
+  </section>
+
+  <!-- 3 · Drape kits ------------------------------------------------------ -->
+  <section
+    id={drapeKits.id}
+    class="container-page section-y scroll-mt-24"
+    aria-labelledby="drape-kits-heading"
+    data-content-status="needs-client-copy"
+  >
+    <h2 id="drape-kits-heading" class="text-3xl text-gradient">{drapeKits.name}</h2>
+    <p class="mt-5 prose-measure text-lg text-text-muted">{about.customisation}</p>
+    <DetailsOnRequest categoryId={drapeKits.id} categoryName={drapeKits.name} />
+  </section>
+
+  <!-- 4 · Remaining categories -------------------------------------------- -->
+  <section class="bg-surface-tint" aria-label="More product categories">
+    <div class="container-page section-y">
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          gridCategories.map((category) => (
+            <section
+              id={category.id}
+              class="flex h-full scroll-mt-24 flex-col rounded-card border border-border bg-white p-6 shadow-soft"
+              data-content-status="needs-client-copy"
+              aria-labelledby={`${category.id}-heading`}
+            >
+              <span class="flex size-12 shrink-0 items-center justify-center rounded-full bg-royal-50 text-brand-purple">
+                <Icon name={category.icon as IconName} size={24} />
+              </span>
+              <h2 id={`${category.id}-heading`} class="mt-4 text-2xl text-brand-plum">
+                {category.name}
+              </h2>
+              <DetailsOnRequest categoryId={category.id} categoryName={category.name} />
+            </section>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · Customisation orb + CTA band ------------------------------------- -->
+  <section class="container-page section-y" aria-label="Customisation">
+    <OrbCallout text={about.customisation} as="p" />
+    <div class="mt-10 flex justify-center">
+      <Button href="/contact/?enquiry=custom" variant="secondary" arrow>Discuss a custom requirement</Button>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
