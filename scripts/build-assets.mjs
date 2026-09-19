@@ -65,7 +65,8 @@ async function lockup({ horizontal, wordFill, taglineFill, markFill }) {
   const WORD = 64; // wordmark cap size
   const TAG = 15.5;
 
-  const measureOnly = async (key, str, size, tracking) => (await textPath(key, str, { size, tracking })).width;
+  const measureOnly = async (key, str, size, tracking) =>
+    (await textPath(key, str, { size, tracking })).width;
   const wordW = await measureOnly("exo2-600", "SHAIVI", WORD, 0.055);
   const tmW = await measureOnly("exo2-600", "\u2122", WORD * 0.3, 0);
   const tagW = await measureOnly("opensans-600", "SAFETY MEETS CARE", TAG, 0.22);
@@ -76,7 +77,14 @@ async function lockup({ horizontal, wordFill, taglineFill, markFill }) {
   const tm = async (x, y) =>
     (await textSvg("exo2-600", "\u2122", { size: WORD * 0.3, x, y }, `fill="${wordFill}"`)).svg;
   const tag = async (x, y) =>
-    (await textSvg("opensans-600", "SAFETY MEETS CARE", { size: TAG, tracking: 0.22, x, y }, `fill="${taglineFill}"`)).svg;
+    (
+      await textSvg(
+        "opensans-600",
+        "SAFETY MEETS CARE",
+        { size: TAG, tracking: 0.22, x, y },
+        `fill="${taglineFill}"`,
+      )
+    ).svg;
 
   if (horizontal) {
     const markSize = 60;
@@ -126,27 +134,42 @@ async function placeholder({ w, h, key, label, alpha = false, tint = "light" }) 
   const subFill = dark ? "#ded7e9" : C.neutral600;
   const base = Math.min(w, h);
 
-  const title = await textSvg("exo2-700", "PHOTO PENDING", {
-    size: base * 0.062,
-    tracking: 0.12,
-    x: w / 2,
-    y: h / 2 + base * 0.11,
-    anchor: "middle",
-  }, `fill="${textFill}"`);
-  const sub = await textSvg("exo2-400", key, {
-    size: base * 0.042,
-    tracking: 0.02,
-    x: w / 2,
-    y: h / 2 + base * 0.185,
-    anchor: "middle",
-  }, `fill="${subFill}"`);
-  const note = await textSvg("opensans-400", label, {
-    size: base * 0.03,
-    tracking: 0.04,
-    x: w / 2,
-    y: h / 2 + base * 0.25,
-    anchor: "middle",
-  }, `fill="${subFill}"`);
+  const title = await textSvg(
+    "exo2-700",
+    "PHOTO PENDING",
+    {
+      size: base * 0.062,
+      tracking: 0.12,
+      x: w / 2,
+      y: h / 2 + base * 0.11,
+      anchor: "middle",
+    },
+    `fill="${textFill}"`,
+  );
+  const sub = await textSvg(
+    "exo2-400",
+    key,
+    {
+      size: base * 0.042,
+      tracking: 0.02,
+      x: w / 2,
+      y: h / 2 + base * 0.185,
+      anchor: "middle",
+    },
+    `fill="${subFill}"`,
+  );
+  const note = await textSvg(
+    "opensans-400",
+    label,
+    {
+      size: base * 0.03,
+      tracking: 0.04,
+      x: w / 2,
+      y: h / 2 + base * 0.25,
+      anchor: "middle",
+    },
+    `fill="${subFill}"`,
+  );
 
   const svg =
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}">` +
@@ -174,7 +197,9 @@ async function placeholder({ w, h, key, label, alpha = false, tint = "light" }) 
     `</svg>`;
 
   const img = sharp(Buffer.from(svg));
-  return alpha ? img.png({ compressionLevel: 9 }).toBuffer() : img.jpeg({ quality: 82, mozjpeg: true }).toBuffer();
+  return alpha
+    ? img.png({ compressionLevel: 9 }).toBuffer()
+    : img.jpeg({ quality: 82, mozjpeg: true }).toBuffer();
 }
 
 /* ----------------------------------------------------------------- icons */
@@ -198,10 +223,30 @@ function icoFromPng(png) {
 
 /* ------------------------------------------------------------------- run */
 console.log("Brand assets");
-const horizontal = await lockup({ horizontal: true, wordFill: C.charcoal, taglineFill: C.purple, markFill: C.red });
-const horizontalWhite = await lockup({ horizontal: true, wordFill: C.white, taglineFill: "#ded7e9", markFill: C.white });
-const stacked = await lockup({ horizontal: false, wordFill: C.charcoal, taglineFill: C.purple, markFill: C.red });
-const stackedWhite = await lockup({ horizontal: false, wordFill: C.white, taglineFill: "#ded7e9", markFill: C.white });
+const horizontal = await lockup({
+  horizontal: true,
+  wordFill: C.charcoal,
+  taglineFill: C.purple,
+  markFill: C.red,
+});
+const horizontalWhite = await lockup({
+  horizontal: true,
+  wordFill: C.white,
+  taglineFill: "#ded7e9",
+  markFill: C.white,
+});
+const stacked = await lockup({
+  horizontal: false,
+  wordFill: C.charcoal,
+  taglineFill: C.purple,
+  markFill: C.red,
+});
+const stackedWhite = await lockup({
+  horizontal: false,
+  wordFill: C.white,
+  taglineFill: "#ded7e9",
+  markFill: C.white,
+});
 
 // Logos ship from public/ so they can be referenced as plain <img> with explicit
 // intrinsic sizes; src/assets/brand/ keeps the same files as the design source.
@@ -257,8 +302,17 @@ write(
 console.log("Icons and social image");
 const markPng = (size, pad = 0) =>
   sharp(Buffer.from(markSvg(C.red)))
-    .resize(size - pad * 2, size - pad * 2, { fit: "contain", background: { r: 255, g: 255, b: 255, alpha: 0 } })
-    .extend({ top: pad, bottom: pad, left: pad, right: pad, background: { r: 255, g: 255, b: 255, alpha: 0 } })
+    .resize(size - pad * 2, size - pad * 2, {
+      fit: "contain",
+      background: { r: 255, g: 255, b: 255, alpha: 0 },
+    })
+    .extend({
+      top: pad,
+      bottom: pad,
+      left: pad,
+      right: pad,
+      background: { r: 255, g: 255, b: 255, alpha: 0 },
+    })
     .png()
     .toBuffer();
 
@@ -289,8 +343,18 @@ write(
 {
   const w = 1200;
   const h = 630;
-  const word = await textSvg("exo2-600", "SHAIVI", { size: 116, tracking: 0.055, x: w / 2, y: 330, anchor: "middle" }, 'fill="#ffffff"');
-  const tag = await textSvg("opensans-600", "SAFETY MEETS CARE", { size: 30, tracking: 0.22, x: w / 2, y: 384, anchor: "middle" }, 'fill="#ded7e9"');
+  const word = await textSvg(
+    "exo2-600",
+    "SHAIVI",
+    { size: 116, tracking: 0.055, x: w / 2, y: 330, anchor: "middle" },
+    'fill="#ffffff"',
+  );
+  const tag = await textSvg(
+    "opensans-600",
+    "SAFETY MEETS CARE",
+    { size: 30, tracking: 0.22, x: w / 2, y: 384, anchor: "middle" },
+    'fill="#ded7e9"',
+  );
   const line = await textSvg(
     "exo2-400",
     "Surgical disposables \u00b7 ISO 13485 certified \u00b7 Bhatkal, Karnataka",
@@ -304,10 +368,15 @@ write(
     `<rect width="${w}" height="${h}" fill="#491568"/>` +
     `<rect width="${w}" height="${h}" fill="url(#d)" opacity="0.92"/>` +
     `<g transform="translate(${w / 2 - 54} 120) scale(1.7)"><path fill="#ffffff" fill-rule="evenodd" d="${SHIELD}${CROSS}"/></g>` +
-    word.svg + tag.svg +
+    word.svg +
+    tag.svg +
     `<rect x="${w / 2 - 90}" y="440" width="180" height="3" rx="1.5" fill="#ffffff" opacity="0.6"/>` +
-    line.svg + `</svg>`;
-  write("public/og/shaivi-og.jpg", await sharp(Buffer.from(svg)).jpeg({ quality: 88, mozjpeg: true }).toBuffer());
+    line.svg +
+    `</svg>`;
+  write(
+    "public/og/shaivi-og.jpg",
+    await sharp(Buffer.from(svg)).jpeg({ quality: 88, mozjpeg: true }).toBuffer(),
+  );
 }
 
 write(
@@ -338,15 +407,27 @@ for (const photo of PHOTOS) {
 // Emblem: a real brand asset rather than a pending photograph.
 {
   const size = 480;
-  const name = await textSvg("exo2-600", "DHRITHI", { size: 46, tracking: 0.16, x: size / 2, y: 372, anchor: "middle" }, `fill="${C.inkIndigo}"`);
-  const sub = await textSvg("opensans-600", "SURGICAL SOLUTIONS", { size: 20, tracking: 0.16, x: size / 2, y: 408, anchor: "middle" }, `fill="${C.purple}"`);
+  const name = await textSvg(
+    "exo2-600",
+    "DHRITHI",
+    { size: 46, tracking: 0.16, x: size / 2, y: 372, anchor: "middle" },
+    `fill="${C.inkIndigo}"`,
+  );
+  const sub = await textSvg(
+    "opensans-600",
+    "SURGICAL SOLUTIONS",
+    { size: 20, tracking: 0.16, x: size / 2, y: 408, anchor: "middle" },
+    `fill="${C.purple}"`,
+  );
   const svg =
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">` +
     `<rect width="${size}" height="${size}" fill="#ffffff"/>` +
     `<circle cx="240" cy="200" r="150" fill="none" stroke="${C.purple}" stroke-width="6"/>` +
     `<circle cx="240" cy="200" r="136" fill="${C.royal50}"/>` +
     `<g transform="translate(160 120) scale(2.5)"><path fill="${C.red}" fill-rule="evenodd" d="${SHIELD}${CROSS}"/></g>` +
-    name.svg + sub.svg + `</svg>`;
+    name.svg +
+    sub.svg +
+    `</svg>`;
   write("src/assets/images/dhrithi-emblem.png", await sharp(Buffer.from(svg)).png().toBuffer());
 }
 
@@ -402,7 +483,12 @@ console.log("Brand board");
     ["ink", C.ink],
   ];
   let body = `<rect width="${w}" height="${h}" fill="#ffffff"/>`;
-  const title = await textSvg("exo2-600", "SHAIVI brand board", { size: 52, x: 72, y: 96 }, `fill="${C.plum}"`);
+  const title = await textSvg(
+    "exo2-600",
+    "SHAIVI brand board",
+    { size: 52, x: 72, y: 96 },
+    `fill="${C.plum}"`,
+  );
   body += title.svg;
   const note = await textSvg(
     "opensans-400",
@@ -417,7 +503,12 @@ console.log("Brand board");
     const x = 72 + (i % 6) * 246;
     const y = 180 + Math.floor(i / 6) * 200;
     const label = await textSvg("exo2-600", name, { size: 20, x, y: y + 158 }, `fill="${C.ink}"`);
-    const val = await textSvg("opensans-400", hex.toUpperCase(), { size: 18, x, y: y + 182 }, `fill="${C.neutral600}"`);
+    const val = await textSvg(
+      "opensans-400",
+      hex.toUpperCase(),
+      { size: 18, x, y: y + 182 },
+      `fill="${C.neutral600}"`,
+    );
     body += `<rect x="${x}" y="${y}" width="216" height="140" rx="16" fill="${hex}"/>`;
     body += label.svg + val.svg;
   }
@@ -434,16 +525,33 @@ console.log("Brand board");
     const [name, stops] = grads[i];
     defs +=
       `<linearGradient id="g${i}" x1="0" x2="1">` +
-      stops.map((s, j) => `<stop offset="${(j / (stops.length - 1)).toFixed(3)}" stop-color="${s}"/>`).join("") +
+      stops
+        .map((s, j) => `<stop offset="${(j / (stops.length - 1)).toFixed(3)}" stop-color="${s}"/>`)
+        .join("") +
       `</linearGradient>`;
     const y = 620 + i * 84;
-    const label = await textSvg("exo2-600", `gradient-${name}`, { size: 20, x: 72, y: y + 40 }, `fill="${C.ink}"`);
+    const label = await textSvg(
+      "exo2-600",
+      `gradient-${name}`,
+      { size: 20, x: 72, y: y + 40 },
+      `fill="${C.ink}"`,
+    );
     body += label.svg;
     body += `<rect x="330" y="${y}" width="1190" height="56" rx="12" fill="url(#g${i})"/>`;
   }
 
-  const typeTitle = await textSvg("exo2-600", "Exo 2 600 \u2014 headings and body", { size: 34, x: 72, y: 1060 }, `fill="${C.inkIndigo}"`);
-  const script = await textSvg("dancing-600", "Elevating", { size: 54, x: 1020, y: 1064 }, `fill="${C.plum}"`);
+  const typeTitle = await textSvg(
+    "exo2-600",
+    "Exo 2 600 \u2014 headings and body",
+    { size: 34, x: 72, y: 1060 },
+    `fill="${C.inkIndigo}"`,
+  );
+  const script = await textSvg(
+    "dancing-600",
+    "Elevating",
+    { size: 54, x: 1020, y: 1064 },
+    `fill="${C.plum}"`,
+  );
   body += typeTitle.svg + script.svg;
 
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}"><defs>${defs}</defs>${body}</svg>`;
@@ -467,12 +575,20 @@ console.log("Verifying rendered text");
 
   for (const [font, str, tracking] of probes) {
     const size = 48;
-    const { svg: glyphs, width } = await textSvg(font, str, { size, tracking, x: 40, y: 90 }, 'fill="#000000"');
+    const { svg: glyphs, width } = await textSvg(
+      font,
+      str,
+      { size, tracking, x: 40, y: 90 },
+      'fill="#000000"',
+    );
     const canvasW = Math.ceil(width) + 120;
     const doc =
       `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${canvasW} 140" width="${canvasW}" height="140">` +
       `<rect width="${canvasW}" height="140" fill="#ffffff"/>${glyphs}</svg>`;
-    const { data, info } = await sharp(Buffer.from(doc)).greyscale().raw().toBuffer({ resolveWithObject: true });
+    const { data, info } = await sharp(Buffer.from(doc))
+      .greyscale()
+      .raw()
+      .toBuffer({ resolveWithObject: true });
 
     const inked = [];
     for (let x = 0; x < info.width; x++) {
@@ -493,7 +609,9 @@ console.log("Verifying rendered text");
     // Side bearings and the trailing tracking space mean ink is always a little
     // narrower than the advance width; under 80% means glyphs were lost.
     if (!(inkWidth > width * 0.8)) {
-      throw new Error(`Text truncated: "${str}" in ${font} drew ${inkWidth}px of an expected ${Math.round(width)}px`);
+      throw new Error(
+        `Text truncated: "${str}" in ${font} drew ${inkWidth}px of an expected ${Math.round(width)}px`,
+      );
     }
 
     // The widest blank run inside the ink should be an inter-word space at most.
@@ -508,7 +626,9 @@ console.log("Verifying rendered text");
     const spaceWidth = str.includes(" ") ? (await textSvg(font, " ", { size })).width + tracking * size : 0;
     const allowed = Math.max(size * 0.45, spaceWidth * 1.9);
     if (gap > allowed) {
-      throw new Error(`Glyph missing from "${str}" in ${font}: ${gap}px gap exceeds ${Math.round(allowed)}px`);
+      throw new Error(
+        `Glyph missing from "${str}" in ${font}: ${gap}px gap exceeds ${Math.round(allowed)}px`,
+      );
     }
   }
   console.log("  \u00b7 all probes rendered in full");

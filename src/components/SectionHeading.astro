@@ -31,19 +31,17 @@ const introClass = onDark ? "text-royal-50" : "text-text-muted";
 
 <div class={`${align === "center" ? "text-center" : ""} ${className}`}>
   {ribbon && <RibbonLabel text={ribbon} class={align === "center" ? "justify-center" : ""} />}
-  {
-    eyebrow && (
-      <p
-        class={`font-accent text-sm font-semibold uppercase tracking-eyebrow ${onDark ? "text-royal-200" : "text-brand-magenta"}`}
-      >
-        {eyebrow}
-      </p>
-    )
-  }
-  <h2 id={id} class={`mt-3 text-3xl ${headingClass}`}>{heading}</h2>
-  {
-    intro && (
-      <p class={`mt-4 prose-measure text-lg ${introClass} ${align === "center" ? "mx-auto" : ""}`}>{intro}</p>
-    )
-  }
+  {eyebrow && (
+    <p
+      class={`font-accent text-sm font-semibold uppercase tracking-eyebrow ${onDark ? "text-royal-200" : "text-brand-magenta"}`}
+    >
+      {eyebrow}
+    </p>
+  )}
+  <h2 id={id} class={`mt-3 text-3xl ${headingClass}`}>
+    {heading}
+  </h2>
+  {intro && (
+    <p class={`mt-4 prose-measure text-lg ${introClass} ${align === "center" ? "mx-auto" : ""}`}>{intro}</p>
+  )}
 </div>

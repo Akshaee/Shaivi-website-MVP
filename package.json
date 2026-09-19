@@ -22,7 +22,10 @@
     "audit": "npm audit --omit=dev --audit-level=high && npm audit signatures",
     "assets": "node scripts/build-assets.mjs",
     "verify": "npm run build && npm run test:seo && npm run test:content && npm run test:contrast && npm run test:html && npm run test:links && npm run test:e2e && npm run lhci && npm run audit",
-    "audit:dev": "npm audit --audit-level=high"
+    "audit:dev": "npm audit --audit-level=high",
+    "lint": "eslint \"scripts/**/*.mjs\" \"eslint.config.js\"",
+    "format": "prettier --write \"src/**/*.{astro,ts,css}\" \"scripts/**/*.mjs\" \"tests/**/*.ts\" \"*.{mjs,js,json}\"",
+    "format:check": "prettier --check \"src/**/*.{astro,ts,css}\" \"scripts/**/*.mjs\" \"tests/**/*.ts\" \"*.{mjs,js,json}\""
   },
   "dependencies": {
     "@astrojs/node": "^11.1.6",

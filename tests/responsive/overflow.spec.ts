@@ -1,5 +1,8 @@
 import { test, expect } from "@playwright/test";
+import nodePath from "node:path";
 import { PAGES, WIDTHS } from "../support/pages";
+
+const SCREENS_DIR = nodePath.resolve("test-results/screens");
 
 test.describe.configure({ mode: "parallel" });
 
@@ -102,7 +105,11 @@ test.describe("reflow and text spacing", () => {
   });
 });
 
+// Screenshots are a reporting artefact, not an assertion, so one project produces
+// them. Running them on every project would just overwrite the same files.
 test("full-page screenshots for the phase report", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop-chromium", "one project is enough");
+
   for (const width of [375, 1440]) {
     for (const { path } of PAGES) {
       await page.setViewportSize({ width, height: width === 375 ? 667 : 900 });
@@ -116,10 +123,7 @@ test("full-page screenshots for the phase report", async ({ page }, testInfo) =>
       await page.waitForTimeout(400);
 
       const name = path === "/" ? "home" : path.replace(/\//g, "");
-      await page.screenshot({
-        path: testInfo.outputPath(`../screens/${name}-${width}.png`),
-        fullPage: true,
-      });
+      await page.screenshot({ path: nodePath.join(SCREENS_DIR, `${name}-${width}.png`), fullPage: true });
     }
   }
 });

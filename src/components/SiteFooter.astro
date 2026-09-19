@@ -40,32 +40,31 @@ const quickLinks = [
           <div>
             <h2 class="text-base font-semibold uppercase tracking-wide text-white">Quick links</h2>
             <ul class="m-0 mt-4 flex list-none flex-col gap-1 p-0">
-              {
-                quickLinks.map((link) => (
-                  <li>
-                    <a href={link.href} class="flex min-h-[44px] items-center text-royal-100 no-underline hover:text-white hover:underline">
-                      {link.label}
-                    </a>
-                  </li>
-                ))
-              }
+              {quickLinks.map((link) => (
+                <li>
+                  <a
+                    href={link.href}
+                    class="flex min-h-[44px] items-center text-royal-100 no-underline hover:text-white hover:underline"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
           <div>
             <h2 class="text-base font-semibold uppercase tracking-wide text-white">Products</h2>
             <ul class="m-0 mt-4 flex list-none flex-col gap-1 p-0">
-              {
-                about.categories.map((category) => (
-                  <li>
-                    <a
-                      href={`/products/#${category.id}`}
-                      class="flex min-h-[44px] items-center text-royal-100 no-underline hover:text-white hover:underline"
-                    >
-                      {category.name}
-                    </a>
-                  </li>
-                ))
-              }
+              {about.categories.map((category) => (
+                <li>
+                  <a
+                    href={`/products/#${category.id}`}
+                    class="flex min-h-[44px] items-center text-royal-100 no-underline hover:text-white hover:underline"
+                  >
+                    {category.name}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
         </div>

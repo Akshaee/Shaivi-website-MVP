@@ -31,12 +31,17 @@ test("every internal link resolves", async ({ page, request }) => {
 
   for (const { path } of [...PAGES, { path: "/404" }]) {
     await page.goto(path === "/404" ? "/not-a-real-page/" : path);
-    const hrefs = await page.locator("a[href]").evaluateAll((links) =>
-      links.map((link) => (link as HTMLAnchorElement).getAttribute("href") ?? ""),
-    );
+    const hrefs = await page
+      .locator("a[href]")
+      .evaluateAll((links) => links.map((link) => (link as HTMLAnchorElement).getAttribute("href") ?? ""));
 
     for (const href of hrefs) {
-      if (href.startsWith("#") || href.startsWith("mailto:") || href.startsWith("tel:") || href.startsWith("http")) {
+      if (
+        href.startsWith("#") ||
+        href.startsWith("mailto:") ||
+        href.startsWith("tel:") ||
+        href.startsWith("http")
+      ) {
         continue;
       }
       const [target, hash] = href.split("#");

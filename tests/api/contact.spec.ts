@@ -132,7 +132,9 @@ test("a filled honeypot looks like success but is not delivered", async ({ reque
   expect(await response.json()).toEqual({ ok: true });
 });
 
-test("a submission faster than three seconds looks like success but is not delivered", async ({ request }) => {
+test("a submission faster than three seconds looks like success but is not delivered", async ({
+  request,
+}) => {
   const response = await request.post(ENDPOINT, {
     headers: formHeaders,
     data: encode(validForm({ startedAt: String(Date.now() - 200) })),
@@ -192,7 +194,12 @@ test.describe("rate limiting", () => {
     await api.dispose();
   });
 
-  test("the sixth enquiry in ten minutes is refused with Retry-After", async () => {
+  test("the sixth enquiry in ten minutes is refused with Retry-After", async ({}, testInfo) => {
+    // Port 4322's limiter counts every client the same, so two projects hitting
+    // it in one run would exhaust the allowance before the second even starts.
+    // The behaviour is browser-independent, so one project exercises it.
+    test.skip(testInfo.project.name !== "desktop-chromium", "runs once per suite");
+
     const headers = { ...formHeaders, Origin: RATE_LIMITED_ORIGIN };
 
     for (let i = 1; i <= 5; i++) {

@@ -62,7 +62,9 @@ function resolveFile(pathname) {
   const target = path.normalize(path.join(root, decoded));
   if (!target.startsWith(root)) return null;
 
-  const candidates = target.endsWith("/") ? [path.join(target, "index.html")] : [target, path.join(target, "index.html")];
+  const candidates = target.endsWith("/")
+    ? [path.join(target, "index.html")]
+    : [target, path.join(target, "index.html")];
 
   for (const candidate of candidates) {
     if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) return candidate;

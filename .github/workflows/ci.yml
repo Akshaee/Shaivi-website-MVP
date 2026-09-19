@@ -63,6 +63,11 @@ jobs:
             exit 1
           fi
 
+      - name: Lint and format check
+        run: |
+          npm run lint
+          npm run format:check
+
       - name: Verify
         run: npm run verify
         env:

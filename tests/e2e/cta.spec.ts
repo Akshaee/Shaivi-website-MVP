@@ -128,11 +128,13 @@ test("every link and button has a destination", async ({ page }) => {
   for (const { path } of PAGES) {
     await page.goto(path);
 
-    const emptyLinks = await page.locator("a").evaluateAll((links) =>
-      links
-        .map((link) => (link as HTMLAnchorElement).getAttribute("href"))
-        .filter((href) => href === null || href.trim() === ""),
-    );
+    const emptyLinks = await page
+      .locator("a")
+      .evaluateAll((links) =>
+        links
+          .map((link) => (link as HTMLAnchorElement).getAttribute("href"))
+          .filter((href) => href === null || href.trim() === ""),
+      );
     expect(emptyLinks, `${path} has links without href`).toEqual([]);
 
     const buttons = await page.locator("button").evaluateAll((elements) =>

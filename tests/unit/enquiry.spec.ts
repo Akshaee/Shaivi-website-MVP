@@ -202,7 +202,7 @@ test.describe("email formatting", () => {
   });
 
   test("HTML-significant characters are escaped", () => {
-    expect(escapeHtml('<script>alert("x") & \'y\'</script>')).toBe(
+    expect(escapeHtml("<script>alert(\"x\") & 'y'</script>")).toBe(
       "&lt;script&gt;alert(&quot;x&quot;) &amp; &#39;y&#39;&lt;/script&gt;",
     );
   });
@@ -225,7 +225,9 @@ test.describe("email formatting", () => {
     expect(html).toContain("&amp;");
 
     const tags = [...html.matchAll(/<\/?([a-z]+)/g)].map((match) => match[1]);
-    expect([...new Set(tags)].sort()).toEqual(["br", "p", "strong", "table", "td", "th", "tr"].filter((tag) => tags.includes(tag)).sort());
+    expect([...new Set(tags)].sort()).toEqual(
+      ["br", "p", "strong", "table", "td", "th", "tr"].filter((tag) => tags.includes(tag)).sort(),
+    );
   });
 
   test("the plain-text body is single-line-safe in every header-bound field", () => {

@@ -30,11 +30,17 @@ const firstPhone = contact.phones[0]!;
   <div class="absolute inset-0 -z-10 bg-brand-deep opacity-25"></div>
   <div class="container-page section-y">
     <div class="max-w-[46rem]">
-      <h2 id={headingId} class="text-3xl text-white">A reliable partner for healthcare providers</h2>
+      <h2 id={headingId} class="text-3xl text-white">
+        A reliable partner for healthcare providers
+      </h2>
       <p class="mt-5 prose-measure text-lg text-royal-50">{about.mission}</p>
       <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-        <Button href="/contact/" variant="on-dark" arrow>{ui.primaryCta}</Button>
-        <Button href={firstPhone.tel} variant="on-dark">Call us</Button>
+        <Button href="/contact/" variant="on-dark" arrow>
+          {ui.primaryCta}
+        </Button>
+        <Button href={firstPhone.tel} variant="on-dark">
+          Call us
+        </Button>
       </div>
     </div>
   </div>

@@ -21,7 +21,13 @@ export function organization(site: URL | undefined): Json {
     telephone: telOf(0),
     address: { "@type": "PostalAddress", ...contact.postalAddress },
     contactPoint: [
-      { "@type": "ContactPoint", contactType: "sales", telephone: telOf(0), email: contact.email, areaServed: "IN" },
+      {
+        "@type": "ContactPoint",
+        contactType: "sales",
+        telephone: telOf(0),
+        email: contact.email,
+        areaServed: "IN",
+      },
       { "@type": "ContactPoint", contactType: "customer service", telephone: telOf(1), areaServed: "IN" },
       { "@type": "ContactPoint", contactType: "customer service", telephone: telOf(2), areaServed: "IN" },
     ],

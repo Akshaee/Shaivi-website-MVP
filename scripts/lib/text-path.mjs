@@ -55,7 +55,11 @@ export async function loadFont(key) {
  * per glyph positioned with its baseline at (x, y).
  * `tracking` is in em units, like CSS letter-spacing in em.
  */
-export async function textPath(fontKey, text, { x = 0, y = 0, size = 100, tracking = 0, anchor = "start" } = {}) {
+export async function textPath(
+  fontKey,
+  text,
+  { x = 0, y = 0, size = 100, tracking = 0, anchor = "start" } = {},
+) {
   const font = await loadFont(fontKey);
   const scale = size / font.unitsPerEm;
   const glyphs = font.stringToGlyphs(text);

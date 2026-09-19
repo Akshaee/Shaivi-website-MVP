@@ -20,8 +20,8 @@
 | R9 | Responsive 320–1920 px, no horizontal scroll | **Met** | `tests/responsive/overflow.spec.ts` across ten widths plus 667×375 landscape, 200% zoom and text-spacing overrides. |
 | R10 | WCAG 2.2 AA | **Met** | axe: 0 violations on every page at 375 and 1440 px, plus the open menu and the form's error and success states. Manual checks in §4. |
 | R11 | OWASP Top 10:2025, headers, CSP, dependency audit | **Met** | `docs/security-review.md`; 12 security tests; `npm audit` clean on runtime dependencies. |
-| R12 | Every interactive element tested | **Met** | 92 e2e tests covering links, buttons, the menu, and every form submission path including no-JavaScript. |
-| R13 | Version history, tag per phase, documented rollback | **Met** | Tags `phase-0` … `phase-9`; rollback steps in the README. |
+| R12 | Every interactive element tested | **Met** | 53 e2e tests per project covering links, buttons, the menu, and every form submission path including no-JavaScript. |
+| R13 | Version history, tag per phase, documented rollback | **Met, with a caveat** | Tags `phase-0` … `phase-8`, three commits, rollback steps in the README. Built in one pass rather than stopping for approval after each phase, so several phase tags point at the same commit. No `phase-9` — nothing has been deployed. |
 
 ---
 
@@ -36,24 +36,30 @@ All run against the production build.
 | Content fidelity | `npm run test:content` | Pass, with 4 content gaps noted |
 | Colour contrast | `npm run test:contrast` | 39 pairs pass |
 | HTML validity | `npm run test:html` | 0 problems |
-| Internal links | `npm run test:links` | 108 links, all resolve |
-| Playwright | `npm run test:e2e` | 175 tests pass |
+| Internal links | `npm run test:links` | 112 links, all resolve |
+| Playwright | `npm run test:e2e` | 274 tests pass, 2 skipped, across `desktop-chromium` and `mobile-375` |
 | Lighthouse CI | `npm run lhci` | 5 pages × 3 runs, all assertions pass |
 | Dependency audit | `npm run audit` | 0 vulnerabilities in runtime dependencies |
 
 ### Playwright breakdown
+
+Counts are per project; the suite runs on `desktop-chromium` and `mobile-375`
+here, and on `iphone-webkit` and `desktop-firefox` as well in CI. Two tests run
+on one project only: the rate-limit test, because the limiter counts every client
+the same and a second project would exhaust the allowance, and the screenshot
+test, because it writes reporting artefacts rather than asserting anything.
 
 | Suite | Tests | What it proves |
 |---|---|---|
 | `tests/e2e/pages.spec.ts` | 14 | 200 responses, one H1, title and description from `content.json`, no console errors, no failed requests, no CSP violations, 404 is `noindex`, robots.txt blocks crawling |
 | `tests/e2e/navigation.spec.ts` | 6 | Logo goes home, `aria-current` marks the active page, skip link moves focus, every internal link and anchor resolves, contact details in the footer on every page, breadcrumbs on inner pages only |
 | `tests/e2e/mobile-menu.spec.ts` | 4 | Popover opens, links are keyboard-reachable, Esc and outside clicks close it, focus returns to the button, choosing a link navigates |
-| `tests/e2e/cta.spec.ts` | 10 | All three `tel:` links match `^tel:\+91\d{10}$`, non-breaking spaces in displayed numbers, `mailto:` correct, directions link opens safely in a new tab, WhatsApp absent while disabled, `?enquiry=` preselect works and rejects junk, mobile action bar works and is absent on `/contact/` |
+| `tests/e2e/cta.spec.ts` | 11 | All three `tel:` links match `^tel:\+91\d{10}$`, non-breaking spaces in displayed numbers, `mailto:` correct, directions link opens safely in a new tab, WhatsApp absent while disabled, `?enquiry=` preselect works and rejects junk, mobile action bar works and is absent on `/contact/` |
 | `tests/e2e/contact-form.spec.ts` | 19 | Empty submit, invalid email, short message, bad phone, missing consent, `maxlength`, keyboard-only completion, honeypot hidden, success, 400, 429, 500, network failure, double-click, and the full no-JavaScript path against the real endpoint |
 | `tests/api/contact.spec.ts` | 16 | 405, 415, 413, 403, 400 with field errors, honeypot and time trap, valid form and JSON, CR/LF handling, 303 redirect, and the 429 path against the rate-limited preview |
 | `tests/unit/enquiry.spec.ts` | 24 | Sanitisers, schema, rate limiter with an injected clock, log redaction, email escaping |
 | `tests/a11y/axe.spec.ts` | 14 | 0 violations on 5 pages × 2 widths, the 404 page, the open menu, and the form's error and success states |
-| `tests/responsive/overflow.spec.ts` | 15 | No overflow at 10 widths plus landscape, header and footer present, 200% zoom and text-spacing overrides, screenshots |
+| `tests/responsive/overflow.spec.ts` | 16 | No overflow at 10 widths plus landscape, header and footer present, 200% zoom and text-spacing overrides, screenshots |
 | `tests/perf/load.spec.ts` | 10 | Load under 2 s on emulated 4G, and the §12 transfer budgets |
 | `tests/security/headers.spec.ts` | 12 | Every header in `vercel.json`, CSP with no unsafe directives, no inline styles, no source maps, no third-party requests, no committed secrets |
 
@@ -124,7 +130,7 @@ and by inspecting computed styles.
 | # | Deviation | Why |
 |---|---|---|
 | 1 | **The kit's assets are generated, not supplied.** The upload contained only the build prompt: no `content.json`, no logos, no photographs, no fonts, no icons. | `content.json` was reconstructed from Appendix A, which the brief states mirrors it exactly. Everything else is generated by `scripts/build-assets.mjs` from the §4 tokens. The seven photographs are labelled placeholders — no stock or AI imagery was used, as §0.3 requires. |
-| 2 | **`npm audit` is scoped with `--omit=dev`.** | `@lhci/cli` depends on `extract-zip` and `tmp`, which carry high-severity advisories with no patched release upstream. They are CI-only and never shipped. `npm run audit:dev` reports them. A separate transitive advisory in `path-to-regexp` that *did* reach the runtime is pinned to the patched version through `overrides`. |
+| 2 | **`npm audit` is scoped with `--omit=dev`.** | Seven high-severity entries sit in the `@lhci/cli` dependency chain, all rooted in two advisories — `extract-zip` and `tmp` — with no patched release upstream. They are CI-only and never shipped; `npm run audit:dev` reports them in full. A separate transitive advisory in `path-to-regexp` that *did* reach the runtime is pinned to the patched version through `overrides`. |
 | 3 | **Lighthouse runs against `scripts/serve-static.mjs`, not `astro preview`.** | `astro preview` serves everything uncompressed; Vercel serves brotli. Measuring the uncompressed server made the HTML look five times heavier than production and pushed LCP to 2.2 s for a reason that does not exist on the real site. The new server compresses, sets the same cache and security headers, and models Vercel. Playwright still uses `astro preview`, because it needs the API route. |
 | 4 | **`content-visibility: auto` was not applied.** | The brief lists it as a technique. Measured, it saved nothing on a site this small and risked layout shift as sections entered the viewport, which CLS ≤ 0.05 does not tolerate. |
 | 5 | **The bridge band's height is in `vw`, not `cqi`.** | A container-query height resolves only after the container is laid out, so it painted at its clamp floor and then jumped — 0.113 CLS on the home page. The band is full-bleed, so `vw` and `cqi` agree and the mask still lines up. |
@@ -167,7 +173,7 @@ is a property of the site:
 
 - **Only Chromium was available.** Playwright's Firefox and WebKit downloads are
   blocked by the sandbox's egress policy. The config keeps all four projects and
-  CI installs all three engines; locally, 175 tests ran on `desktop-chromium` and
+  CI installs all three engines; locally, 274 tests ran on `desktop-chromium` and
   `mobile-375`. The `iphone-webkit` and `desktop-firefox` projects have not been
   executed.
 - **`npm audit signatures` cannot run.** The sigstore TUF endpoint returns 403

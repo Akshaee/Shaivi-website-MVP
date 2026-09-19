@@ -89,7 +89,12 @@ export const POST: APIRoute = async (context) => {
     const isForm = FORM_TYPES.includes(contentType);
     const isJson = contentType === JSON_TYPE;
     if (!isForm && !isJson) {
-      return finish(415, "invalid", { ok: false, error: "Unsupported content type" }, { detail: "content-type" });
+      return finish(
+        415,
+        "invalid",
+        { ok: false, error: "Unsupported content type" },
+        { detail: "content-type" },
+      );
     }
 
     // 3 · Declared size
@@ -111,7 +116,12 @@ export const POST: APIRoute = async (context) => {
 
     const fields = isJson ? readJson(raw) : await readForm(raw, contentType, request);
     if (!fields) {
-      return finish(400, "invalid", { ok: false, errors: { form: "Could not read the submission" } }, { detail: "parse" });
+      return finish(
+        400,
+        "invalid",
+        { ok: false, errors: { form: "Could not read the submission" } },
+        { detail: "parse" },
+      );
     }
 
     // 7 · Rate limit, before any further work
@@ -161,7 +171,8 @@ export const POST: APIRoute = async (context) => {
 
     // 8 · Turnstile, fail closed when configured
     if (TURNSTILE_SECRET_KEY) {
-      const token = typeof fields["cf-turnstile-response"] === "string" ? fields["cf-turnstile-response"] : undefined;
+      const token =
+        typeof fields["cf-turnstile-response"] === "string" ? fields["cf-turnstile-response"] : undefined;
       const verdict = await verifyTurnstile(token, TURNSTILE_SECRET_KEY, clientAddress);
       if (!verdict.ok) {
         return finish(

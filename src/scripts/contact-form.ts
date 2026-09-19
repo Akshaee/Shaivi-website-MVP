@@ -25,12 +25,26 @@ if (form) {
 
   form.setAttribute("novalidate", "");
 
-  type FieldName = "name" | "organisation" | "email" | "phone" | "enquiryType" | "product" | "message" | "consent";
+  type FieldName =
+    "name" | "organisation" | "email" | "phone" | "enquiryType" | "product" | "message" | "consent";
 
   const controls = new Map<FieldName, HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>();
-  for (const name of ["name", "organisation", "email", "phone", "enquiryType", "product", "message", "consent"] as const) {
+  for (const name of [
+    "name",
+    "organisation",
+    "email",
+    "phone",
+    "enquiryType",
+    "product",
+    "message",
+    "consent",
+  ] as const) {
     const el = form.elements.namedItem(name);
-    if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement || el instanceof HTMLSelectElement) {
+    if (
+      el instanceof HTMLInputElement ||
+      el instanceof HTMLTextAreaElement ||
+      el instanceof HTMLSelectElement
+    ) {
       controls.set(name, el);
     }
   }
@@ -52,7 +66,8 @@ if (form) {
 
     switch (name) {
       case "name":
-        if (value.length < 2 || value.length > 80 || !/^[\p{L}\p{M} .'-]+$/u.test(value)) return messageFor(name);
+        if (value.length < 2 || value.length > 80 || !/^[\p{L}\p{M} .'-]+$/u.test(value))
+          return messageFor(name);
         return null;
       case "organisation":
         return value.length > 120 ? messageFor(name) : null;

@@ -127,7 +127,9 @@ function over(foreground, background, alpha) {
   const b = background.replace("#", "");
   let out = "#";
   for (let i = 0; i < 6; i += 2) {
-    const value = Math.round(alpha * parseInt(f.slice(i, i + 2), 16) + (1 - alpha) * parseInt(b.slice(i, i + 2), 16));
+    const value = Math.round(
+      alpha * parseInt(f.slice(i, i + 2), 16) + (1 - alpha) * parseInt(b.slice(i, i + 2), 16),
+    );
     out += value.toString(16).padStart(2, "0");
   }
   return out;
@@ -165,8 +167,14 @@ for (const [label, fg, gradient, stops] of GRADIENT_PAIRS) {
     }
   }
   const pass = worst >= 4.5;
-  rows.push({ label: `${label} (${fg} on ${gradient}, worst stop ${worstStop})`, value: worst, threshold: 4.5, pass });
-  if (!pass) failures.push(`${label}: ${fg} on ${gradient} stop ${worstStop} is ${worst.toFixed(2)}:1, needs 4.5:1`);
+  rows.push({
+    label: `${label} (${fg} on ${gradient}, worst stop ${worstStop})`,
+    value: worst,
+    threshold: 4.5,
+    pass,
+  });
+  if (!pass)
+    failures.push(`${label}: ${fg} on ${gradient} stop ${worstStop} is ${worst.toFixed(2)}:1, needs 4.5:1`);
 }
 
 // The CTA band stacks a decorative photo, the dusk gradient at 94% and a
@@ -188,7 +196,12 @@ for (const [label, fg] of [
     }
   }
   const pass = worst >= 4.5;
-  rows.push({ label: `${label} (${fg} on photo+dusk+scrim, worst ${worstStop})`, value: worst, threshold: 4.5, pass });
+  rows.push({
+    label: `${label} (${fg} on photo+dusk+scrim, worst ${worstStop})`,
+    value: worst,
+    threshold: 4.5,
+    pass,
+  });
   if (!pass) failures.push(`${label}: ${fg} over the CTA band stack is ${worst.toFixed(2)}:1, needs 4.5:1`);
 }
 

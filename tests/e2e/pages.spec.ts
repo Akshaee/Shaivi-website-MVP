@@ -70,7 +70,9 @@ test("every page declares the same organisation structured data", async ({ page 
     const blocks = await page.locator('script[type="application/ld+json"]').allTextContents();
     const types = blocks.flatMap((block) => {
       const parsed: unknown = JSON.parse(block);
-      return (Array.isArray(parsed) ? parsed : [parsed]).map((entry) => (entry as { "@type": string })["@type"]);
+      return (Array.isArray(parsed) ? parsed : [parsed]).map(
+        (entry) => (entry as { "@type": string })["@type"],
+      );
     });
     expect(types, `${path} structured data`).toContain("Organization");
   }

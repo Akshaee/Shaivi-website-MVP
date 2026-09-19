@@ -14,12 +14,10 @@ const chip = onDark
 ---
 
 <ul class={`flex flex-wrap gap-2.5 ${className}`} aria-label={label}>
-  {
-    items.map((item) => (
-      <li class={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold ${chip}`}>
-        <Icon name="check" size={16} class="shrink-0" />
-        {item}
-      </li>
-    ))
-  }
+  {items.map((item) => (
+    <li class={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold ${chip}`}>
+      <Icon name="check" size={16} class="shrink-0" />
+      {item}
+    </li>
+  ))}
 </ul>

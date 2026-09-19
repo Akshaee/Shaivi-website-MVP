@@ -12,9 +12,7 @@
       ],
       "numberOfRuns": 3,
       "settings": {
-        "skipAudits": [
-          "is-crawlable"
-        ],
+        "skipAudits": ["is-crawlable"],
         "chromeFlags": "--no-sandbox --disable-dev-shm-usage"
       }
     },

@@ -41,9 +41,13 @@ const HERO_SIZES = "(min-width: 1024px) 50vw, 92vw";
     <div class="grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
       <div class="lg:col-span-6">
         <RibbonLabel text={about.label} />
-        <h1 id="about-heading" class="mt-4 text-4xl text-brand-ink-indigo">{about.heading}</h1>
+        <h1 id="about-heading" class="mt-4 text-4xl text-brand-ink-indigo">
+          {about.heading}
+        </h1>
         <div class="mt-6 flex flex-col gap-5">
-          {about.paragraphs.map((paragraph) => <p class="prose-measure text-lg text-text-muted">{paragraph}</p>)}
+          {about.paragraphs.map((paragraph) => (
+            <p class="prose-measure text-lg text-text-muted">{paragraph}</p>
+          ))}
         </div>
       </div>
       <div class="lg:col-span-6">
@@ -67,22 +71,22 @@ const HERO_SIZES = "(min-width: 1024px) 50vw, 92vw";
     <div class="container-page section-y">
       <div class="grid items-center gap-12 lg:grid-cols-12">
         <div class="lg:col-span-6">
-          <h2 id="manufacturers-heading" class="text-3xl text-gradient">{about.manufacturersHeading}</h2>
+          <h2 id="manufacturers-heading" class="text-3xl text-gradient">
+            {about.manufacturersHeading}
+          </h2>
           <ul class="mt-7 flex list-none flex-col gap-2 p-0">
-            {
-              about.categories.map((category) => (
-                <li>
-                  <a
-                    href={`/products/#${category.id}`}
-                    class="flex min-h-[48px] items-center gap-3 rounded-card border border-border bg-white px-5 py-3 font-semibold text-brand-ink-indigo no-underline shadow-soft hover:border-royal-300"
-                  >
-                    <Icon name={category.icon as IconName} size={22} class="shrink-0 text-brand-purple" />
-                    {category.name}
-                    <Icon name="chevron-right" size={18} class="ml-auto shrink-0 text-brand-purple" />
-                  </a>
-                </li>
-              ))
-            }
+            {about.categories.map((category) => (
+              <li>
+                <a
+                  href={`/products/#${category.id}`}
+                  class="flex min-h-[48px] items-center gap-3 rounded-card border border-border bg-white px-5 py-3 font-semibold text-brand-ink-indigo no-underline shadow-soft hover:border-royal-300"
+                >
+                  <Icon name={category.icon as IconName} size={22} class="shrink-0 text-brand-purple" />
+                  {category.name}
+                  <Icon name="chevron-right" size={18} class="ml-auto shrink-0 text-brand-purple" />
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
         <div class="lg:col-span-6">
@@ -102,13 +106,11 @@ const HERO_SIZES = "(min-width: 1024px) 50vw, 92vw";
       gradient
     />
     <ul class="mt-10 grid list-none grid-cols-1 gap-5 p-0 sm:grid-cols-2">
-      {
-        infrastructure.items.map((item) => (
-          <li>
-            <StatCard stat={item.stat} title={item.title} text={item.text} icon={item.icon as IconName} />
-          </li>
-        ))
-      }
+      {infrastructure.items.map((item) => (
+        <li>
+          <StatCard stat={item.stat} title={item.title} text={item.text} icon={item.icon as IconName} />
+        </li>
+      ))}
     </ul>
   </section>
 
@@ -118,7 +120,9 @@ const HERO_SIZES = "(min-width: 1024px) 50vw, 92vw";
       <div class="grid items-center gap-12 lg:grid-cols-12">
         <div class="lg:col-span-7">
           <RibbonLabel text={leadership.label} />
-          <h2 id="leadership-heading" class="mt-4 text-3xl text-white">{leadership.heading}</h2>
+          <h2 id="leadership-heading" class="mt-4 text-3xl text-white">
+            {leadership.heading}
+          </h2>
           <p class="mt-5 prose-measure text-lg text-royal-50">{leadership.text}</p>
         </div>
         <div class="lg:col-span-5">

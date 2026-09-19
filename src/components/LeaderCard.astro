@@ -30,7 +30,9 @@ const { image, alt, name, role, onDark = false, size = 200, headingId } = Astro.
     />
   </div>
   <figcaption class="mt-5">
-    <h3 id={headingId} class={`text-xl ${onDark ? "text-white" : "text-brand-plum"}`}>{name}</h3>
+    <h3 id={headingId} class={`text-xl ${onDark ? "text-white" : "text-brand-plum"}`}>
+      {name}
+    </h3>
     <p class={`mt-1 text-base ${onDark ? "text-royal-50" : "text-text-muted"}`}>{role}</p>
   </figcaption>
 </figure>

@@ -34,8 +34,7 @@ const errorClass = "mt-1 flex items-center gap-1.5 text-sm font-semibold text-da
     id="form-status"
     class="mb-6 hidden rounded-card border-2 border-danger bg-danger-bg p-4 text-base font-semibold text-danger"
     role="alert"
-  >
-  </div>
+  ></div>
 
   <form
     id="enquiry-form"
@@ -52,7 +51,9 @@ const errorClass = "mt-1 flex items-center gap-1.5 text-sm font-semibold text-da
     <input type="hidden" id="startedAt" name="startedAt" value="" />
 
     <div>
-      <label class={labelClass} for="name">Full name</label>
+      <label class={labelClass} for="name">
+        Full name
+      </label>
       <input
         class={`${field} mt-2`}
         type="text"
@@ -84,7 +85,9 @@ const errorClass = "mt-1 flex items-center gap-1.5 text-sm font-semibold text-da
     </div>
 
     <div>
-      <label class={labelClass} for="email">Email address</label>
+      <label class={labelClass} for="email">
+        Email address
+      </label>
       <input
         class={`${field} mt-2`}
         type="email"
@@ -102,7 +105,9 @@ const errorClass = "mt-1 flex items-center gap-1.5 text-sm font-semibold text-da
       <label class={labelClass} for="phone">
         Phone number <span class="font-normal text-text-muted">(optional)</span>
       </label>
-      <span class={hintClass} id="phone-hint">Include the country code if you’re outside India.</span>
+      <span class={hintClass} id="phone-hint">
+        Include the country code if you’re outside India.
+      </span>
       <input
         class={`${field} mt-2`}
         type="tel"
@@ -117,7 +122,9 @@ const errorClass = "mt-1 flex items-center gap-1.5 text-sm font-semibold text-da
     </div>
 
     <div>
-      <label class={labelClass} for="enquiryType">What is your enquiry about?</label>
+      <label class={labelClass} for="enquiryType">
+        What is your enquiry about?
+      </label>
       <select
         class={`${field} mt-2`}
         id="enquiryType"
@@ -126,7 +133,9 @@ const errorClass = "mt-1 flex items-center gap-1.5 text-sm font-semibold text-da
         autocomplete="off"
         aria-describedby="enquiryType-error"
       >
-        {ENQUIRY_TYPES.map((value) => <option value={value}>{ENQUIRY_TYPE_LABELS[value]}</option>)}
+        {ENQUIRY_TYPES.map((value) => (
+          <option value={value}>{ENQUIRY_TYPE_LABELS[value]}</option>
+        ))}
       </select>
       <p class={`${errorClass} hidden`} id="enquiryType-error" data-message={MESSAGES.enquiryType}></p>
     </div>
@@ -135,17 +144,28 @@ const errorClass = "mt-1 flex items-center gap-1.5 text-sm font-semibold text-da
       <label class={labelClass} for="product">
         Product <span class="font-normal text-text-muted">(optional)</span>
       </label>
-      <select class={`${field} mt-2`} id="product" name="product" autocomplete="off" aria-describedby="product-error">
+      <select
+        class={`${field} mt-2`}
+        id="product"
+        name="product"
+        autocomplete="off"
+        aria-describedby="product-error"
+      >
         <option value="">No particular product</option>
-        {about.categories.map((category) => <option value={category.id}>{category.name}</option>)}
+        {about.categories.map((category) => (
+          <option value={category.id}>{category.name}</option>
+        ))}
       </select>
       <p class={`${errorClass} hidden`} id="product-error" data-message={MESSAGES.product}></p>
     </div>
 
     <div>
-      <label class={labelClass} for="message">Message</label>
+      <label class={labelClass} for="message">
+        Message
+      </label>
       <span class={hintClass} id="message-hint">
-        Share the products, sizes and quantities you need, and whether you need a customised drape, kit or gown.
+        Share the products, sizes and quantities you need, and whether you need a customised drape, kit or
+        gown.
       </span>
       <textarea
         class={`${field} mt-2`}
@@ -155,7 +175,8 @@ const errorClass = "mt-1 flex items-center gap-1.5 text-sm font-semibold text-da
         minlength="20"
         maxlength="2000"
         rows="6"
-        aria-describedby="message-hint message-error"></textarea>
+        aria-describedby="message-hint message-error"
+      ></textarea>
       <p class={`${errorClass} hidden`} id="message-error" data-message={MESSAGES.message}></p>
     </div>
 
@@ -170,27 +191,27 @@ const errorClass = "mt-1 flex items-center gap-1.5 text-sm font-semibold text-da
           aria-describedby="consent-error"
         />
         <label class="text-base" for="consent">
-          I agree that Dhrithi Surgical Solutions may use these details to respond to my enquiry, as explained in
-          the <a href="/privacy-policy/">Privacy Policy</a>.
+          I agree that Dhrithi Surgical Solutions may use these details to respond to my enquiry, as explained
+          in the <a href="/privacy-policy/">Privacy Policy</a>.
         </label>
       </div>
       <p class={`${errorClass} hidden`} id="consent-error" data-message={MESSAGES.consent}></p>
     </div>
 
-    {
-      turnstileKey && (
-        <div class="cf-turnstile" data-sitekey={turnstileKey} data-appearance="interaction-only">
-          <noscript>
-            <p class="text-sm text-text-muted">
-              JavaScript is off, so the spam check is skipped. Your enquiry is still checked on our server.
-            </p>
-          </noscript>
-        </div>
-      )
-    }
+    {turnstileKey && (
+      <div class="cf-turnstile" data-sitekey={turnstileKey} data-appearance="interaction-only">
+        <noscript>
+          <p class="text-sm text-text-muted">
+            JavaScript is off, so the spam check is skipped. Your enquiry is still checked on our server.
+          </p>
+        </noscript>
+      </div>
+    )}
 
     <div>
-      <Button type="submit" id="enquiry-submit" arrow>Send enquiry</Button>
+      <Button type="submit" id="enquiry-submit" arrow>
+        Send enquiry
+      </Button>
       <p id="submit-status" class="mt-3 text-base font-semibold text-brand-ink-indigo" aria-live="polite"></p>
     </div>
   </form>
@@ -202,15 +223,23 @@ const errorClass = "mt-1 flex items-center gap-1.5 text-sm font-semibold text-da
     </h3>
     <p class="mt-3 text-base">We have your details and will be in touch.</p>
     <div class="mt-6 flex flex-wrap gap-3">
-      <Button href="/products/" variant="secondary">Browse products</Button>
-      <Button href="/" variant="secondary">Back to home</Button>
+      <Button href="/products/" variant="secondary">
+        Browse products
+      </Button>
+      <Button href="/" variant="secondary">
+        Back to home
+      </Button>
     </div>
   </div>
 
   <p id="privacy-summary" class="mt-8 text-sm text-text-muted">
-    We use your details only to reply to this enquiry. We keep them for up to [12 months] unless we start working
-    together, and we never sell them. To access, correct or delete your details, or to withdraw consent, email
-    <a class="break-anywhere" href={`mailto:${contact.email}`}>{contact.email}</a>. Read our
+    We use your details only to reply to this enquiry. We keep them for up to [12 months] unless we start
+    working together, and we never sell them. To access, correct or delete your details, or to withdraw
+    consent, email
+    <a class="break-anywhere" href={`mailto:${contact.email}`}>
+      {contact.email}
+    </a>
+    . Read our
     <a href="/privacy-policy/">Privacy Policy</a>.
   </p>
 </div>
@@ -235,4 +264,6 @@ const errorClass = "mt-1 flex items-center gap-1.5 text-sm font-semibold text-da
 </style>
 
 <script src="../scripts/contact-form.ts"></script>
-{turnstileKey && <script is:inline async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>}
+{turnstileKey && (
+  <script is:inline async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
+)}

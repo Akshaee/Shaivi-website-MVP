@@ -39,7 +39,7 @@ const Tag = href ? "a" : "button";
 
 <Tag
   class={classes}
-  {...href ? { href } : { type, disabled: loading || undefined }}
+  {...(href ? { href } : { type, disabled: loading || undefined })}
   aria-busy={loading ? "true" : undefined}
   {...rest}
 >

@@ -56,7 +56,8 @@ for (const { file, key } of PAGES) {
   if (description.length < 140 || description.length > 155) {
     fail(key, `meta description is ${description.length} characters, must be 140-155`);
   }
-  if (seenDescriptions.has(description)) fail(key, `meta description duplicates ${seenDescriptions.get(description)}`);
+  if (seenDescriptions.has(description))
+    fail(key, `meta description duplicates ${seenDescriptions.get(description)}`);
   seenDescriptions.set(description, key);
 
   // --- R5: headings --------------------------------------------------------
@@ -84,7 +85,8 @@ for (const { file, key } of PAGES) {
     if (alt === "") continue; // decorative, and declared as such
     if (BANNED_ALT.test(alt)) fail(key, `alt text starts with a banned word: "${alt}"`);
     if (FILENAME_ALT.test(alt)) fail(key, `alt text looks like a filename: "${alt}"`);
-    if (alt.length > 125) fail(key, `alt text is ${alt.length} characters, keep it under 125: "${alt.slice(0, 50)}…"`);
+    if (alt.length > 125)
+      fail(key, `alt text is ${alt.length} characters, keep it under 125: "${alt.slice(0, 50)}…"`);
   }
 
   // --- canonical and robots ------------------------------------------------
@@ -111,4 +113,6 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log(`check-seo: ${PAGES.length} pages pass (titles, descriptions, headings, alt text, canonical, Open Graph)`);
+console.log(
+  `check-seo: ${PAGES.length} pages pass (titles, descriptions, headings, alt text, canonical, Open Graph)`,
+);

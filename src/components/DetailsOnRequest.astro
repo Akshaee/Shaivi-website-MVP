@@ -12,12 +12,8 @@ const { ui } = content;
 
 <div class="mt-4">
   <p class="text-base text-text-muted">{ui.detailsOnRequest}</p>
-  <Button
-    href={`/contact/?enquiry=product&product=${categoryId}`}
-    variant="secondary"
-    class="mt-5"
-    arrow
-  >
-    {ui.detailsCta}<span class="sr-only-custom">: {categoryName}</span>
+  <Button href={`/contact/?enquiry=product&product=${categoryId}`} variant="secondary" class="mt-5" arrow>
+    {ui.detailsCta}
+    <span class="sr-only-custom">: {categoryName}</span>
   </Button>
 </div>

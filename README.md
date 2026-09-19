@@ -48,7 +48,14 @@ foreground server, so Playwright and Lighthouse start their own with
 | `npm run test:e2e` | The Playwright suite (e2e, API, a11y, responsive, performance, security, unit) |
 | `npm run lhci` | Lighthouse CI against the performance budgets |
 | `npm run audit` | `npm audit` on runtime dependencies, plus signature verification |
-| `npm run verify` | Everything above, in order — this is what CI runs |
+| `npm run lint` | ESLint over the Node scripts |
+| `npm run format` / `format:check` | Prettier |
+| `npm run verify` | Build, checks, tests, Lighthouse and audit, in order — this is what CI runs |
+
+ESLint covers the plain JavaScript in `scripts/`. `.astro` files are excluded
+because linting the TypeScript in their frontmatter needs `typescript-eslint`,
+which is outside the agreed dependency list; `astro check` type-checks every
+`.astro` file and runs as the first step of `npm run build`.
 
 ## Environment variables
 
@@ -211,7 +218,17 @@ provides both.
 
 ## Version control and rollback
 
-Each build phase is committed and tagged (`phase-0` … `phase-9`).
+The build phases from the brief are tagged `phase-0` … `phase-8`. It was built
+in one pass rather than stopping for approval after each phase, so several phase
+tags point at the same commit — the tag marks where that phase's deliverables
+landed, not a separate checkpoint. There is no `phase-9`: nothing has been
+deployed yet.
+
+| Tag | Commit contains |
+|---|---|
+| `phase-0` – `phase-2` | Scaffold, config, design system, site shell, 404, robots.txt |
+| `phase-3` – `phase-6` | The five pages, the enquiry form and the API |
+| `phase-7` – `phase-8` | Test suite, performance pass, checks and documentation |
 
 ```bash
 git log --oneline --decorate     # see the history and the tags

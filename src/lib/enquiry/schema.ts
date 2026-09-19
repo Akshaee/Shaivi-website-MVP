@@ -53,7 +53,11 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 const digitsIn = (value: string) => (value.match(/\d/g) ?? []).length;
 
-const singleLine = (max: number) => z.string().max(max * 4).transform(cleanSingleLine);
+const singleLine = (max: number) =>
+  z
+    .string()
+    .max(max * 4)
+    .transform(cleanSingleLine);
 
 export const enquirySchema = z.object({
   name: singleLine(80).pipe(
@@ -65,13 +69,7 @@ export const enquirySchema = z.object({
   ),
   organisation: singleLine(120).pipe(z.string().max(120, MESSAGES.organisation)).optional().default(""),
   email: singleLine(254)
-    .pipe(
-      z
-        .string()
-        .min(3, MESSAGES.email)
-        .max(254, MESSAGES.email)
-        .regex(EMAIL_PATTERN, MESSAGES.email),
-    )
+    .pipe(z.string().min(3, MESSAGES.email).max(254, MESSAGES.email).regex(EMAIL_PATTERN, MESSAGES.email))
     .transform((value) => value.toLowerCase()),
   phone: singleLine(40)
     .pipe(

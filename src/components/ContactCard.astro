@@ -33,38 +33,50 @@ const link = onDark ? "text-white" : "text-brand-indigo";
         class="size-16 object-contain"
       />
     </span>
-    {
-      showHeading && (
-        <Heading class={`text-xl font-semibold ${onDark ? "text-white" : "text-brand-plum"}`}>
-          {contact.officeLabel}
-        </Heading>
-      )
-    }
+    {showHeading && (
+      <Heading class={`text-xl font-semibold ${onDark ? "text-white" : "text-brand-plum"}`}>
+        {contact.officeLabel}
+      </Heading>
+    )}
   </div>
 
   <address class={`mt-5 not-italic ${muted}`}>
     <span class="flex gap-3">
-      <Icon name="map-pin" size={20} class={`mt-1 shrink-0 ${onDark ? "text-royal-200" : "text-brand-purple"}`} />
+      <Icon
+        name="map-pin"
+        size={20}
+        class={`mt-1 shrink-0 ${onDark ? "text-royal-200" : "text-brand-purple"}`}
+      />
       <span class="block">
-        {contact.addressLines.map((line) => <span class="block">{line}</span>)}
+        {contact.addressLines.map((line) => (
+          <span class="block">{line}</span>
+        ))}
       </span>
     </span>
 
     <span class="mt-4 flex gap-3">
-      <Icon name="mail" size={20} class={`mt-1 shrink-0 ${onDark ? "text-royal-200" : "text-brand-purple"}`} />
-      <a href={`mailto:${contact.email}`} class={`break-anywhere py-1 ${link}`}>{contact.email}</a>
+      <Icon
+        name="mail"
+        size={20}
+        class={`mt-1 shrink-0 ${onDark ? "text-royal-200" : "text-brand-purple"}`}
+      />
+      <a href={`mailto:${contact.email}`} class={`break-anywhere py-1 ${link}`}>
+        {contact.email}
+      </a>
     </span>
 
     <span class="mt-4 flex gap-3">
-      <Icon name="phone" size={20} class={`mt-1 shrink-0 ${onDark ? "text-royal-200" : "text-brand-purple"}`} />
+      <Icon
+        name="phone"
+        size={20}
+        class={`mt-1 shrink-0 ${onDark ? "text-royal-200" : "text-brand-purple"}`}
+      />
       <span class="flex flex-col gap-1">
-        {
-          contact.phones.map((phone) => (
-            <a href={phone.tel} class={`py-1 ${link}`}>
-              {nonBreakingPhone(phone.display)}
-            </a>
-          ))
-        }
+        {contact.phones.map((phone) => (
+          <a href={phone.tel} class={`py-1 ${link}`}>
+            {nonBreakingPhone(phone.display)}
+          </a>
+        ))}
       </span>
     </span>
   </address>

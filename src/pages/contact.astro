@@ -27,28 +27,37 @@ const quickLink =
   schema={[organization(Astro.site), breadcrumbList(breadcrumbs, Astro.site), contactPage(Astro.site)]}
 >
   <section class="container-page pt-8 pb-4 lg:pt-12" aria-labelledby="contact-heading">
-    <h1 id="contact-heading" class="text-4xl text-brand-ink-indigo">Contact Dhrithi Surgical Solutions</h1>
+    <h1 id="contact-heading" class="text-4xl text-brand-ink-indigo">
+      Contact Dhrithi Surgical Solutions
+    </h1>
     <p class="mt-5 prose-measure text-lg text-text-muted">
-      Tell us which products, sizes and quantities you need, or describe the customised drape, kit or gown you have
-      in mind.
+      Tell us which products, sizes and quantities you need, or describe the customised drape, kit or gown you
+      have in mind.
     </p>
   </section>
 
   <!-- Status targets for the no-JavaScript submission path. -->
   <section id="enquiry-sent" class="status-target container-page" aria-labelledby="enquiry-sent-heading">
     <div class="mt-8 rounded-card border-2 border-success bg-success-bg p-6">
-      <h2 id="enquiry-sent-heading" class="text-2xl text-success">Thank you — your enquiry has been sent.</h2>
+      <h2 id="enquiry-sent-heading" class="text-2xl text-success">
+        Thank you — your enquiry has been sent.
+      </h2>
       <p class="mt-3 text-base">We have your details and will be in touch.</p>
     </div>
   </section>
 
   <section id="enquiry-error" class="status-target container-page" aria-labelledby="enquiry-error-heading">
     <div class="mt-8 rounded-card border-2 border-danger bg-danger-bg p-6">
-      <h2 id="enquiry-error-heading" class="text-2xl text-danger">We couldn’t send your enquiry.</h2>
+      <h2 id="enquiry-error-heading" class="text-2xl text-danger">
+        We couldn’t send your enquiry.
+      </h2>
       <p class="mt-3 text-base">
         Please check your details and try again, or call
         <a href={firstPhone.tel}>{nonBreakingPhone(firstPhone.display)}</a> or email
-        <a class="break-anywhere" href={`mailto:${contact.email}`}>{contact.email}</a>.
+        <a class="break-anywhere" href={`mailto:${contact.email}`}>
+          {contact.email}
+        </a>
+        .
       </p>
     </div>
   </section>
@@ -57,8 +66,13 @@ const quickLink =
     <div class="grid gap-12 lg:grid-cols-12 lg:gap-10">
       <div class="lg:col-span-7">
         <!-- Quick contact comes first on mobile. -->
-        <section class="rounded-card border border-border bg-surface-tint p-5" aria-labelledby="quick-contact-heading">
-          <h2 id="quick-contact-heading" class="text-xl text-brand-plum">Reach us directly</h2>
+        <section
+          class="rounded-card border border-border bg-surface-tint p-5"
+          aria-labelledby="quick-contact-heading"
+        >
+          <h2 id="quick-contact-heading" class="text-xl text-brand-plum">
+            Reach us directly
+          </h2>
           <div class="mt-4 grid gap-3 sm:grid-cols-2">
             <a href={firstPhone.tel} class={quickLink}>
               <Icon name="phone" size={20} class="text-brand-purple" />
@@ -68,24 +82,24 @@ const quickLink =
               <Icon name="mail" size={20} class="shrink-0 text-brand-purple" />
               Email us
             </a>
-            {
-              whatsapp.enabled && whatsapp.number && (
-                <a
-                  href={`https://wa.me/${whatsapp.number}?text=${encodeURIComponent(whatsapp.prefill)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class={quickLink}
-                >
-                  <Icon name="message-circle" size={20} class="text-brand-purple" />
-                  WhatsApp
-                </a>
-              )
-            }
+            {whatsapp.enabled && whatsapp.number && (
+              <a
+                href={`https://wa.me/${whatsapp.number}?text=${encodeURIComponent(whatsapp.prefill)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class={quickLink}
+              >
+                <Icon name="message-circle" size={20} class="text-brand-purple" />
+                WhatsApp
+              </a>
+            )}
           </div>
         </section>
 
         <section class="mt-10" aria-labelledby="enquiry-heading">
-          <h2 id="enquiry-heading" class="text-3xl text-gradient">Send an enquiry</h2>
+          <h2 id="enquiry-heading" class="text-3xl text-gradient">
+            Send an enquiry
+          </h2>
           <div class="mt-8">
             <ContactForm />
           </div>
@@ -97,7 +111,9 @@ const quickLink =
           class="rounded-card border border-border bg-white p-6 shadow-soft lg:sticky lg:top-[calc(var(--header-h)+1.5rem)]"
           aria-labelledby="office-heading"
         >
-          <h2 id="office-heading" class="text-2xl text-brand-plum">{contact.officeLabel}</h2>
+          <h2 id="office-heading" class="text-2xl text-brand-plum">
+            {contact.officeLabel}
+          </h2>
           <ContactCard showHeading={false} class="mt-5" />
         </section>
       </div>

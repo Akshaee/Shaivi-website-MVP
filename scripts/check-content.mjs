@@ -29,12 +29,7 @@ function textOf(file) {
 }
 
 function normalise(value) {
-  return value
-    .replace(/[‘’]/g, "'")
-    .replace(/[“”]/g, '"')
-    .replace(/[–—]/g, "-")
-    .replace(/\s+/g, " ")
-    .trim();
+  return value.replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/[–—]/g, "-").replace(/\s+/g, " ").trim();
 }
 
 const pages = {
@@ -118,7 +113,8 @@ for (const phone of contact.phones) requireVerbatim("/contact/", "phone", phone.
 // Anything that reads like a claim (a number, a percentage, a standard) must be
 // traceable to content.json. Dates the build generates are allowed separately.
 const corpus = normalise(JSON.stringify(content));
-const CLAIM = /\b(?:ISO\s?\d{4,5}|\d+(?:,\d{3})*(?:\.\d+)?\s?(?:%|sq\.?\s?ft\.?|acres?|years?|hours?|days?))\b/gi;
+const CLAIM =
+  /\b(?:ISO\s?\d{4,5}|\d+(?:,\d{3})*(?:\.\d+)?\s?(?:%|sq\.?\s?ft\.?|acres?|years?|hours?|days?))\b/gi;
 const ALLOWED_UI = new Set(["100%"]); // used only inside brochure copy, matched below anyway
 
 for (const [key, text] of Object.entries(pages)) {
@@ -135,15 +131,21 @@ for (const [key, text] of Object.entries(pages)) {
 const productsHtml = fs.existsSync(path.join(DIST, "products/index.html"))
   ? fs.readFileSync(path.join(DIST, "products/index.html"), "utf8")
   : "";
-const gaps = [...productsHtml.matchAll(/id="([^"]+)"[^>]*data-content-status="needs-client-copy"/g)].map((m) => m[1]);
-const gapsAlt = [...productsHtml.matchAll(/data-content-status="needs-client-copy"[^>]*id="([^"]+)"/g)].map((m) => m[1]);
+const gaps = [...productsHtml.matchAll(/id="([^"]+)"[^>]*data-content-status="needs-client-copy"/g)].map(
+  (m) => m[1],
+);
+const gapsAlt = [...productsHtml.matchAll(/data-content-status="needs-client-copy"[^>]*id="([^"]+)"/g)].map(
+  (m) => m[1],
+);
 const allGaps = [...new Set([...gaps, ...gapsAlt])];
 const describedCategories = new Set([gowns.categoryId]);
 const expectedGaps = about.categories.filter((c) => !describedCategories.has(c.id)).map((c) => c.id);
 
 for (const id of expectedGaps) {
   if (!allGaps.includes(id)) {
-    failures.push(`/products/: "${id}" has no brochure copy but is not marked data-content-status="needs-client-copy"`);
+    failures.push(
+      `/products/: "${id}" has no brochure copy but is not marked data-content-status="needs-client-copy"`,
+    );
   }
 }
 if (allGaps.length > 0) {
@@ -155,7 +157,9 @@ const placeholderCount = fs
   .readdirSync(path.resolve("src/assets/images"))
   .filter((file) => /\.(jpg|png)$/.test(file)).length;
 if (placeholderCount > 0) {
-  notes.push(`${placeholderCount} image files in src/assets/images — confirm each is a client original, not a placeholder`);
+  notes.push(
+    `${placeholderCount} image files in src/assets/images — confirm each is a client original, not a placeholder`,
+  );
 }
 
 if (failures.length > 0) {

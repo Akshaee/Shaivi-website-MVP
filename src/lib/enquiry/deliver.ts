@@ -58,7 +58,9 @@ export function formatHtml(enquiry: Enquiry): string {
     ["Product", enquiry.product || "—"],
   ];
   const table = rows
-    .map(([label, value]) => `<tr><th align="left">${escapeHtml(label)}</th><td>${escapeHtml(value)}</td></tr>`)
+    .map(
+      ([label, value]) => `<tr><th align="left">${escapeHtml(label)}</th><td>${escapeHtml(value)}</td></tr>`,
+    )
     .join("");
   const message = escapeHtml(enquiry.message).replace(/\n/g, "<br>");
   return `<table>${table}</table><p><strong>Message</strong></p><p>${message}</p>`;
