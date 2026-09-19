@@ -73,11 +73,13 @@ export const POST: APIRoute = async (context) => {
     }
 
     // No-JavaScript path: redirect to a :target anchor on the contact page.
+    // The Location stays relative so it resolves against whichever origin served
+    // the request — the production domain, a Vercel preview or a local preview —
+    // and so a forged Host header can never turn this into an open redirect.
     const ok = payload.ok === true;
-    const location = new URL(ok ? SUCCESS_PATH : ERROR_PATH, site ?? new URL(request.url)).toString();
     return new Response(null, {
       status: 303,
-      headers: { Location: location, "Cache-Control": "no-store", ...headers },
+      headers: { Location: ok ? SUCCESS_PATH : ERROR_PATH, "Cache-Control": "no-store", ...headers },
     });
   };
 

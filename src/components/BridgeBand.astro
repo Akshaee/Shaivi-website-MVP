@@ -21,9 +21,9 @@ const Tag = as;
     <div class="bridge-copy">
       <Tag
         id={headingId}
-        class="font-accent text-xl font-normal leading-tight text-white drop-shadow-[0_1px_2px_rgba(20,15,40,0.45)] sm:text-2xl"
+        class="font-accent text-lg font-normal leading-tight text-white text-balance drop-shadow-[0_1px_2px_rgba(20,15,40,0.45)] sm:text-xl lg:text-2xl"
       >
-        {lines.map((line, i) => <span class="block">{line}{i < lines.length - 1 ? "" : ""}</span>)}
+        {lines.map((line) => <span class="block">{line}</span>)}
       </Tag>
     </div>
   </div>

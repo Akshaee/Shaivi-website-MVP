@@ -144,7 +144,10 @@
     scroll-behavior: auto;
   }
   @media (prefers-reduced-motion: no-preference) {
-    html { scroll-behavior: smooth; }
+    /* Smooth scrolling is scoped to in-page anchor jumps. Applying it to the
+       whole document makes every programmatic scroll animate, which is both
+       disorienting on long pages and a source of flaky automation. */
+    :has(:target) { scroll-behavior: smooth; }
     @view-transition { navigation: auto; }
   }
 
@@ -164,7 +167,14 @@
   h1, h2, h3, h4 { font-weight: 600; line-height: 1.15; text-wrap: balance; margin: 0; }
   p, ul, ol, dl { margin: 0; }
 
-  a { color: var(--color-brand-indigo); text-underline-offset: 0.2em; }
+  /* Tailwind's preflight drops link underlines. Put them back: an inline link in
+     a paragraph has to be distinguishable without relying on colour (WCAG 1.4.1).
+     Navigation, buttons and whole-card links opt out with `no-underline`. */
+  a {
+    color: var(--color-brand-indigo);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
   a:hover { color: var(--color-royal-700); }
 
   :focus-visible {
@@ -224,7 +234,11 @@
   --ww: clamp(170px, 34cqi, 445px);              /* waist width */
   --wx: calc(var(--center) - var(--ww) * 0.479); /* waist left edge (centre sits at 47.9% of the SVG) */
   position: relative;
-  block-size: max(9.5rem, calc(var(--ww) * 0.64));
+  /* Height is deliberately in viewport units, not container units: cqi resolves
+     only after the container has been laid out, so a cqi-based height paints at
+     the clamp floor first and then jumps, shifting the whole page below it. The
+     band is full-bleed, so 1cqi and 1vw agree and the mask still lines up. */
+  block-size: clamp(9.5rem, 21.8vw, 17.8rem);
   background-image: var(--gradient-bridge);
   -webkit-mask-image: linear-gradient(#000 0 0), url("/brand/bridge-waist-mask.svg"), linear-gradient(#000 0 0);
           mask-image: linear-gradient(#000 0 0), url("/brand/bridge-waist-mask.svg"), linear-gradient(#000 0 0);

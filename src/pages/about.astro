@@ -5,6 +5,7 @@ import SectionHeading from "../components/SectionHeading.astro";
 import RibbonLabel from "../components/RibbonLabel.astro";
 import OrbCallout from "../components/OrbCallout.astro";
 import LeaderCard from "../components/LeaderCard.astro";
+import StatCard from "../components/StatCard.astro";
 import CtaBand from "../components/CtaBand.astro";
 import Icon from "../components/Icon.astro";
 import content from "../data/content.json";
@@ -19,6 +20,10 @@ const breadcrumbs = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about/" },
 ];
+
+// Shared by the <Picture> below and the head preload.
+const HERO_WIDTHS = [480, 720, 1024, 1400];
+const HERO_SIZES = "(min-width: 1024px) 50vw, 92vw";
 ---
 
 <BaseLayout
@@ -45,8 +50,8 @@ const breadcrumbs = [
         <Picture
           src={photos["factory-bhatkal"]}
           alt={altFor("factory-bhatkal")}
-          widths={[480, 720, 1024, 1400]}
-          sizes="(min-width: 1024px) 50vw, 92vw"
+          widths={HERO_WIDTHS}
+          sizes={HERO_SIZES}
           formats={["avif", "webp"]}
           fallbackFormat="jpg"
           quality={64}
@@ -96,20 +101,15 @@ const breadcrumbs = [
       intro={infrastructure.intro}
       gradient
     />
-    <dl class="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2">
+    <ul class="mt-10 grid list-none grid-cols-1 gap-5 p-0 sm:grid-cols-2">
       {
         infrastructure.items.map((item) => (
-          <div class="flex h-full flex-col rounded-card border border-border bg-white p-6 shadow-soft">
-            <Icon name={item.icon as IconName} size={28} class="text-brand-purple" />
-            <p class="mt-4 text-2xl font-bold tabular-nums text-brand-ink-indigo">{item.stat}</p>
-            <dt class="mt-1">
-              <h3 class="text-xl text-brand-plum">{item.title}</h3>
-            </dt>
-            <dd class="mt-2 ml-0 text-base text-text-muted">{item.text}</dd>
-          </div>
+          <li>
+            <StatCard stat={item.stat} title={item.title} text={item.text} icon={item.icon as IconName} />
+          </li>
         ))
       }
-    </dl>
+    </ul>
   </section>
 
   <!-- 4 · Leadership ------------------------------------------------------ -->
@@ -119,7 +119,7 @@ const breadcrumbs = [
         <div class="lg:col-span-7">
           <RibbonLabel text={leadership.label} />
           <h2 id="leadership-heading" class="mt-4 text-3xl text-white">{leadership.heading}</h2>
-          <p class="mt-5 prose-measure text-lg text-royal-100">{leadership.text}</p>
+          <p class="mt-5 prose-measure text-lg text-royal-50">{leadership.text}</p>
         </div>
         <div class="lg:col-span-5">
           <LeaderCard

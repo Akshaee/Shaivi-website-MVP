@@ -1,5 +1,12 @@
 {
   "recurse": true,
-  "silent": true,
-  "skip": ["^(?!http://localhost)", "/api/"]
+  "verbosity": "error",
+  "serverRoot": "dist/client",
+  "skip": [
+    "dhrithisurgicalsolutions\\.com",
+    "google\\.com",
+    "challenges\\.cloudflare\\.com",
+    "wa\\.me",
+    "/api/"
+  ]
 }

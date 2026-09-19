@@ -1,5 +1,5 @@
 import { z } from "astro/zod";
-import content from "../../data/content.json";
+import content from "../../data/content.json" with { type: "json" };
 
 export const ENQUIRY_TYPES = ["product", "custom", "bulk", "other"] as const;
 export type EnquiryType = (typeof ENQUIRY_TYPES)[number];

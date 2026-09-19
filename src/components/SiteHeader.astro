@@ -2,6 +2,7 @@
 import Icon from "./Icon.astro";
 import Button from "./Button.astro";
 import content from "../data/content.json";
+import { nonBreakingPhone } from "../lib/text";
 import sizes from "../assets/brand/logo-sizes.json";
 
 const { contact, ui } = content;
@@ -65,7 +66,7 @@ const logoW = Math.round((sizes.horizontal.width / sizes.horizontal.height) * 48
         class="inline-flex min-h-[44px] items-center gap-2 px-2 font-semibold text-brand-indigo no-underline"
       >
         <Icon name="phone" size={18} />
-        {firstPhone.display}
+        {nonBreakingPhone(firstPhone.display)}
       </a>
       <Button href="/contact/" class="px-5 text-sm">{ui.primaryCta}</Button>
     </div>
@@ -86,7 +87,7 @@ const logoW = Math.round((sizes.horizontal.width / sizes.horizontal.height) * 48
     button, with no JavaScript. Without popover support the nav renders as a plain
     visible list, which is still usable.
   -->
-  <nav id="site-menu" popover aria-label="Primary" class="site-menu">
+  <nav id="site-menu" popover aria-label="Primary, mobile" class="site-menu">
     <div class="site-menu-inner">
       <div class="flex items-center justify-between">
         <p class="font-accent text-sm font-semibold uppercase tracking-eyebrow text-brand-magenta">Menu</p>
@@ -122,7 +123,7 @@ const logoW = Math.round((sizes.horizontal.width / sizes.horizontal.height) * 48
         class="mt-5 inline-flex min-h-[48px] items-center gap-2 font-semibold text-brand-indigo no-underline"
       >
         <Icon name="phone" size={18} />
-        {firstPhone.display}
+        {nonBreakingPhone(firstPhone.display)}
       </a>
       <Button href="/contact/" class="mt-4" full arrow>{ui.primaryCta}</Button>
     </div>

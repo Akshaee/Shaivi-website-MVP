@@ -4,6 +4,7 @@ import ContactForm from "../components/ContactForm.astro";
 import ContactCard from "../components/ContactCard.astro";
 import Icon from "../components/Icon.astro";
 import content from "../data/content.json";
+import { nonBreakingPhone } from "../lib/text";
 import { breadcrumbList, contactPage, organization } from "../lib/schema";
 
 const { contact } = content;
@@ -46,7 +47,7 @@ const quickLink =
       <h2 id="enquiry-error-heading" class="text-2xl text-danger">We couldn’t send your enquiry.</h2>
       <p class="mt-3 text-base">
         Please check your details and try again, or call
-        <a href={firstPhone.tel}>{firstPhone.display}</a> or email
+        <a href={firstPhone.tel}>{nonBreakingPhone(firstPhone.display)}</a> or email
         <a class="break-anywhere" href={`mailto:${contact.email}`}>{contact.email}</a>.
       </p>
     </div>
@@ -61,7 +62,7 @@ const quickLink =
           <div class="mt-4 grid gap-3 sm:grid-cols-2">
             <a href={firstPhone.tel} class={quickLink}>
               <Icon name="phone" size={20} class="text-brand-purple" />
-              {firstPhone.display}
+              {nonBreakingPhone(firstPhone.display)}
             </a>
             <a href={`mailto:${contact.email}`} class={`${quickLink} break-anywhere`}>
               <Icon name="mail" size={20} class="shrink-0 text-brand-purple" />

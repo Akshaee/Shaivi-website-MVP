@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import content from "../data/content.json";
+import { nonBreakingPhone } from "../lib/text";
 import { breadcrumbList, organization } from "../lib/schema";
 
 const { contact, company } = content;
@@ -43,7 +44,7 @@ const ul = "mt-4 flex list-disc flex-col gap-2 pl-6 prose-measure text-base text
         {contact.phones.map((phone, i) => (
           <>
             {i > 0 ? ", " : ""}
-            <a href={phone.tel}>{phone.display}</a>
+            <a href={phone.tel}>{nonBreakingPhone(phone.display)}</a>
           </>
         ))}.
       </p>

@@ -1,5 +1,10 @@
 import { defineConfig, devices } from "@playwright/test";
 
+// The sandbox this was built in ships only Chromium. Set PW_CHROMIUM_PATH to an
+// existing binary to reuse it; CI installs the full set and leaves it unset.
+const chromiumPath = process.env.PW_CHROMIUM_PATH;
+const launchOptions = chromiumPath ? { executablePath: chromiumPath } : {};
+
 export default defineConfig({
   testDir: "tests",
   fullyParallel: true,
@@ -32,9 +37,9 @@ export default defineConfig({
     },
   ],
   projects: [
-    { name: "mobile-375", use: { ...devices["Pixel 7"], viewport: { width: 375, height: 667 } } },
+    { name: "mobile-375", use: { ...devices["Pixel 7"], viewport: { width: 375, height: 667 }, launchOptions } },
     { name: "iphone-webkit", use: { ...devices["iPhone 13"] } },
-    { name: "desktop-chromium", use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } } },
+    { name: "desktop-chromium", use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 }, launchOptions } },
     { name: "desktop-firefox", use: { ...devices["Desktop Firefox"] } },
   ],
 });

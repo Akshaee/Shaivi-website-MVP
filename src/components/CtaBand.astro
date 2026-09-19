@@ -23,11 +23,15 @@ const firstPhone = contact.phones[0]!;
     loading="lazy"
     class="absolute inset-0 -z-10 size-full object-cover"
   />
+  <!-- Dusk gradient plus a brand-deep scrim. The scrim is what keeps white text
+       at 5.4:1 over the gradient's lightest stop even where the photo below is
+       at its brightest; scripts/contrast.mjs models this exact stack. -->
   <div class="absolute inset-0 -z-10 bg-dusk opacity-[0.94]"></div>
+  <div class="absolute inset-0 -z-10 bg-brand-deep opacity-25"></div>
   <div class="container-page section-y">
     <div class="max-w-[46rem]">
       <h2 id={headingId} class="text-3xl text-white">A reliable partner for healthcare providers</h2>
-      <p class="mt-5 prose-measure text-lg text-royal-100">{about.mission}</p>
+      <p class="mt-5 prose-measure text-lg text-royal-50">{about.mission}</p>
       <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
         <Button href="/contact/" variant="on-dark" arrow>{ui.primaryCta}</Button>
         <Button href={firstPhone.tel} variant="on-dark">Call us</Button>

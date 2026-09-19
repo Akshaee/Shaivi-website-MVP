@@ -11,6 +11,7 @@ interface Props {
 }
 
 const { seoKey, schema } = Astro.props;
+
 const { title, description } = getSeo(seoKey);
 const canonical = canonicalFor(seoKey, Astro.site);
 const ogImage = absoluteUrl("/og/shaivi-og.jpg", Astro.site);

@@ -2,6 +2,7 @@
 import { Picture } from "astro:assets";
 import Icon from "./Icon.astro";
 import content from "../data/content.json";
+import { nonBreakingPhone } from "../lib/text";
 import { photos, altFor } from "../lib/images";
 
 interface Props {
@@ -60,7 +61,7 @@ const link = onDark ? "text-white" : "text-brand-indigo";
         {
           contact.phones.map((phone) => (
             <a href={phone.tel} class={`py-1 ${link}`}>
-              {phone.display}
+              {nonBreakingPhone(phone.display)}
             </a>
           ))
         }

@@ -20,9 +20,16 @@ import type { IconName } from "../components/Icon.astro";
 const { company, about, infrastructure, leadership, gowns, ui } = content;
 const md = leadership.people[0]!;
 const qualityStandards = infrastructure.items.find((i) => i.id === "quality-standards")!;
+
+// Shared by the <Picture> below and the head preload, so both ask for the same files.
+const HERO_WIDTHS = [360, 480, 720, 960];
+const HERO_SIZES = "(min-width: 1024px) 34vw, 88vw";
 ---
 
-<BaseLayout seoKey="/" schema={[organization(Astro.site), webSite(Astro.site)]}>
+<BaseLayout
+  seoKey="/"
+  schema={[organization(Astro.site), webSite(Astro.site)]}
+>
   <!-- 1 · Hero ---------------------------------------------------------- -->
   <section class="container-page pt-10 pb-16 lg:pt-16 lg:pb-24" aria-labelledby="hero-heading">
     <div class="grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
@@ -32,6 +39,7 @@ const qualityStandards = infrastructure.items.find((i) => i.id === "quality-stan
         </p>
         <h1 id="hero-heading" class="mt-5">
           <span class="block font-script text-script leading-none text-brand-plum">{company.heroScriptWord}</span>
+          {" "}
           <span class="mt-1 block text-4xl uppercase tracking-[0.01em] text-brand-ink-indigo">
             {company.heroHeadline}
           </span>
@@ -52,13 +60,17 @@ const qualityStandards = infrastructure.items.find((i) => i.id === "quality-stan
         <Picture
           src={photos["hero-nurse"]}
           alt={altFor("hero-nurse")}
-          widths={[360, 480, 720, 960]}
-          sizes="(min-width: 1024px) 34vw, 88vw"
+          widths={HERO_WIDTHS}
+          sizes={HERO_SIZES}
           formats={["avif", "webp"]}
           fallbackFormat="jpg"
           quality={64}
           priority
-          class="mx-auto max-h-[55svh] w-auto rounded-photo object-contain lg:max-h-none lg:w-full"
+          {/* Width-driven, never height-driven: a max-height with w-auto leaves the
+              box undetermined until the image loads, which shifted everything
+              below it. At 18rem the portrait crop lands at roughly 55svh on a
+              phone, which is what the brief asks for. */}
+          class="mx-auto w-full max-w-[18rem] rounded-photo object-contain sm:max-w-[22rem] lg:max-w-none"
         />
       </div>
     </div>
@@ -133,7 +145,7 @@ const qualityStandards = infrastructure.items.find((i) => i.id === "quality-stan
       <div class="grid items-center gap-10 lg:grid-cols-12">
         <div class="lg:col-span-7">
           <h2 id="gowns-heading" class="text-3xl text-white">{gowns.heading}</h2>
-          <p class="mt-5 prose-measure text-lg text-royal-100">{gowns.intro[0]}</p>
+          <p class="mt-5 prose-measure text-lg text-royal-50">{gowns.intro[0]}</p>
           <FeatureChips items={gowns.features} onDark label="Gown features" class="mt-7" />
           <Button href="/products/#gowns" variant="on-dark" class="mt-8" arrow>View the gown range</Button>
         </div>

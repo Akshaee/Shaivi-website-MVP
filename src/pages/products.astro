@@ -27,6 +27,10 @@ const drapeKits = otherCategories[0]!;
 const gridCategories = otherCategories.slice(1);
 
 const reinforced = gowns.types.find((t) => t.id === "reinforced-bvb-surgical-gowns")!;
+
+// Shared by the <Picture> below and the head preload.
+const HERO_WIDTHS = [320, 480, 640, 800];
+const HERO_SIZES = "(min-width: 1024px) 30vw, 70vw";
 ---
 
 <BaseLayout
@@ -63,21 +67,24 @@ const reinforced = gowns.types.find((t) => t.id === "reinforced-bvb-surgical-gow
   </section>
 
   <!-- 2 · Gowns ----------------------------------------------------------- -->
-  <section id={gownsCategory.id} class="container-page mt-10 scroll-mt-24" aria-labelledby="gowns-heading">
+  <!-- Two anchors: the category id used by the nav and cards, and #gowns, which
+       the home page's "View the gown range" link points at. -->
+  <div id={gownsCategory.id} class="scroll-mt-24"></div>
+  <section id="gowns" class="container-page mt-10 scroll-mt-24" aria-labelledby="gowns-heading">
     <div class="violet-panel overflow-hidden px-6 py-12 lg:px-12 lg:py-16">
       <div class="grid items-center gap-10 lg:grid-cols-12">
         <div class="lg:col-span-7">
           <h2 id="gowns-heading" class="text-3xl text-white">{gowns.heading}</h2>
           <div class="mt-5 flex flex-col gap-4">
-            {gowns.intro.map((paragraph) => <p class="prose-measure text-lg text-royal-100">{paragraph}</p>)}
+            {gowns.intro.map((paragraph) => <p class="prose-measure text-lg text-royal-50">{paragraph}</p>)}
           </div>
         </div>
         <div class="lg:col-span-5">
           <Picture
             src={cutouts["surgical-gown-model"]}
             alt={altFor("surgical-gown-model")}
-            widths={[320, 480, 640, 800]}
-            sizes="(min-width: 1024px) 30vw, 70vw"
+            widths={HERO_WIDTHS}
+            sizes={HERO_SIZES}
             formats={["avif", "webp"]}
             fallbackFormat="webp"
             quality={66}
