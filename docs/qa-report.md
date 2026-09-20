@@ -171,13 +171,39 @@ hosting region, and whether to add analytics.
 Two things in the brief could not be done in the build environment, and neither
 is a property of the site:
 
-- **Only Chromium was available.** Playwright's Firefox and WebKit downloads are
-  blocked by the sandbox's egress policy. The config keeps all four projects and
-  CI installs all three engines; locally, 274 tests ran on `desktop-chromium` and
-  `mobile-375`. The `iphone-webkit` and `desktop-firefox` projects have not been
-  executed.
-- **`npm audit signatures` cannot run.** The sigstore TUF endpoint returns 403
-  through the egress proxy. It stays in `npm run audit` and runs normally in CI.
+- **Only Chromium is available here.** Playwright's Firefox and WebKit downloads
+  are blocked by the sandbox's egress policy, so locally the suite runs on
+  `desktop-chromium` and `mobile-375` only. CI installs all three engines and
+  now exercises `iphone-webkit` and `desktop-firefox` on every push.
+
+  That gap was not theoretical. The first CI run found two defects a
+  Chromium-only run cannot see, both since fixed:
+
+  1. `upgrade-insecure-requests` sat in the per-page meta CSP. WebKit applies it
+     to `http://localhost`, which Chromium and Firefox do not, so every
+     subresource was re-requested over `https://` against the plain-HTTP preview
+     server and failed the TLS handshake. The WebKit suite was testing an
+     unstyled, script-less page and reported 37 failures. The directive now
+     ships as an HTTP header in `vercel.json`, where production still applies it.
+  2. The mobile menu's close button took its accessible name from an SVG
+     `<title>`. WebKit does not compute a name from one, so VoiceOver announced
+     an unnamed button. `aria-label` now sits on the button, and a static test
+     over the built HTML guards every icon-only control.
+
+  Treat a green local run as Chromium evidence only. The cross-browser answer
+  comes from CI.
+- **`npm audit signatures` cannot run here.** The sigstore TUF endpoint returns
+  403 through the egress proxy. It stays in `npm run audit` and runs in CI.
+
+  It is scoped to production dependencies (`--omit=dev`), matching the
+  vulnerability audit beside it. Unscoped, CI fails with
+  `EMISSINGSIGNATUREKEY` on `@playwright/test`: the package publishes
+  attestations, but npm finds no public key to verify them against. That is a
+  registry/tooling gap, not a bad signature. The trade-off is that dev
+  dependencies' provenance attestations are not checked; their integrity still
+  is, because `npm ci` verifies every tarball against the SHA-512 hashes in the
+  committed lockfile. Attestation adds provenance on top of that, and it is
+  the shipped dependencies where it matters most.
 
 Also outstanding:
 

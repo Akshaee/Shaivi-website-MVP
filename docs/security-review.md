@@ -65,7 +65,7 @@
 |---|---|---|
 | Dependency audit (runtime) | `npm audit --omit=dev --audit-level=high` | 0 vulnerabilities |
 | Dependency audit (including dev) | `npm run audit:dev` | 7 high-severity entries, all in the `@lhci/cli` chain, rooted in two unpatched advisories; dev-only |
-| Registry signatures | `npm audit signatures` | Not runnable in the build sandbox — the sigstore TUF endpoint returns 403 through the egress proxy. Runs normally in GitHub Actions. |
+| Registry signatures | `npm audit signatures --omit=dev` | Not runnable in the build sandbox — the sigstore TUF endpoint returns 403 through the egress proxy. Runs in GitHub Actions. Scoped to production dependencies: unscoped it fails with `EMISSINGSIGNATUREKEY` on `@playwright/test`, which publishes attestations npm has no public key for. Dev-dependency integrity is still enforced by the lockfile hashes `npm ci` checks. |
 | Committed secrets | `git grep -nE "(api[_-]?key\|secret\|token\|password)\s*[:=]\s*['\"][^'\"]{8,}"` | No matches outside `.env.example`; also asserted in `tests/security/headers.spec.ts` |
 | Security headers | `npm run test:e2e -- tests/security` | 12/12 pass |
 | API behaviour | `npm run test:e2e -- tests/api` | 16/16 pass |

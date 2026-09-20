@@ -19,7 +19,7 @@
     "test:html": "html-validate --config htmlvalidate.config.mjs \"dist/client/**/*.html\"",
     "test:links": "linkinator --config linkinator.config.json /",
     "lhci": "lhci autorun",
-    "audit": "npm audit --omit=dev --audit-level=high && npm audit signatures",
+    "audit": "npm audit --omit=dev --audit-level=high && npm audit signatures --omit=dev",
     "assets": "node scripts/build-assets.mjs",
     "verify": "npm run build && npm run test:seo && npm run test:content && npm run test:contrast && npm run test:html && npm run test:links && npm run test:e2e && npm run lhci && npm run audit",
     "audit:dev": "npm audit --audit-level=high",
