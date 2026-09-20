@@ -28,6 +28,12 @@ export type IconName =
 interface Props {
   name: IconName;
   size?: number;
+  /**
+   * Turns the icon into an `img` with a `<title>`. Only for an icon that stands
+   * alone and carries meaning. Never use it to name a button or link: WebKit
+   * does not compute an accessible name from an SVG `<title>`, so the control
+   * would be nameless in VoiceOver. Put `aria-label` on the control instead.
+   */
   label?: string;
   class?: string;
 }

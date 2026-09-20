@@ -1,5 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import fs from "node:fs";
+import nodePath from "node:path";
 import { PAGES } from "../support/pages";
 
 const TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"];
@@ -69,4 +71,34 @@ test("the form in its success state has no accessibility violations", async ({ p
 
   const results = await scan(page);
   expect(results.violations.length, describeViolations(results)).toBe(0);
+});
+
+// A static check, so this fails in every engine rather than only where axe runs.
+// A control whose visible content is just an icon has to carry its own name:
+// WebKit does not compute an accessible name from an SVG <title>, so an
+// icon-only button labelled through the icon is nameless in VoiceOver.
+test("every icon-only control carries its own accessible name", () => {
+  const dist = nodePath.resolve("dist/client");
+  const offenders: string[] = [];
+
+  for (const { path: pagePath } of PAGES) {
+    const file = pagePath === "/" ? "index.html" : `${pagePath.replace(/^\/|\/$/g, "")}/index.html`;
+    const html = fs.readFileSync(nodePath.join(dist, file), "utf8");
+
+    for (const match of html.matchAll(/<(button|a)\b([^>]*)>([\s\S]*?)<\/\1>/g)) {
+      const [, tag, attributes, inner] = match;
+      // Strip the SVG whole. Its <title> is not visible text and does not name
+      // the control in WebKit, so counting it as text is exactly the mistake
+      // this test exists to catch.
+      const withoutIcons = inner!.replace(/<svg\b[\s\S]*?<\/svg>/g, "");
+      const text = withoutIcons.replace(/<[^>]*>/g, "").trim();
+      const hasIcon = /<svg\b/.test(inner!);
+      if (text.length > 0 || !hasIcon) continue;
+
+      const named = /\baria-label="[^"]+"/.test(attributes!) || /\baria-labelledby="[^"]+"/.test(attributes!);
+      if (!named) offenders.push(`${pagePath}: <${tag} ${attributes!.trim().slice(0, 80)}>`);
+    }
+  }
+
+  expect(offenders, `icon-only controls with no accessible name:\n  ${offenders.join("\n  ")}`).toEqual([]);
 });

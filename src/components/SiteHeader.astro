@@ -88,13 +88,17 @@ const logoW = Math.round((sizes.horizontal.width / sizes.horizontal.height) * 48
     <div class="site-menu-inner">
       <div class="flex items-center justify-between">
         <p class="font-accent text-sm font-semibold uppercase tracking-eyebrow text-brand-magenta">Menu</p>
+        <!-- The name goes on the button, not the icon. WebKit does not derive an
+             accessible name from an SVG <title>, so labelling the icon alone
+             leaves VoiceOver announcing an unnamed "button". -->
         <button
           type="button"
           popovertarget="site-menu"
           popovertargetaction="hide"
+          aria-label="Close menu"
           class="inline-flex size-11 items-center justify-center rounded-full border border-border text-brand-plum"
         >
-          <Icon name="x" size={20} label="Close menu" />
+          <Icon name="x" size={20} />
         </button>
       </div>
       <ul class="m-0 mt-4 flex list-none flex-col p-0">
