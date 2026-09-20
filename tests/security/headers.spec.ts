@@ -21,7 +21,7 @@ test.describe("vercel.json", () => {
     const headers = headersFor("/(.*)");
 
     expect(headers.get("strict-transport-security")).toBe("max-age=63072000; includeSubDomains");
-    expect(headers.get("content-security-policy")).toBe("frame-ancestors 'none'");
+    expect(headers.get("content-security-policy")).toBe("frame-ancestors 'none'; upgrade-insecure-requests");
     expect(headers.get("x-frame-options")).toBe("DENY");
     expect(headers.get("x-content-type-options")).toBe("nosniff");
     expect(headers.get("referrer-policy")).toBe("strict-origin-when-cross-origin");
@@ -32,6 +32,16 @@ test.describe("vercel.json", () => {
     for (const feature of ["camera", "microphone", "geolocation", "payment", "usb"]) {
       expect(permissions, `Permissions-Policy should disable ${feature}`).toContain(`${feature}=()`);
     }
+  });
+
+  test("insecure requests are upgraded, and only by the header", () => {
+    // The directive lives in the header rather than the per-page meta CSP.
+    // WebKit applies `upgrade-insecure-requests` to http://localhost as well,
+    // which Chromium and Firefox do not; in the meta tag it would make every
+    // subresource fail the TLS handshake against the plain-HTTP preview server
+    // and the cross-browser suite would test an unstyled page. Production still
+    // gets the directive because Vercel sends this header on every response.
+    expect(headersFor("/(.*)").get("content-security-policy")).toContain("upgrade-insecure-requests");
   });
 
   test("HSTS preload is not enabled until the client opts in", () => {

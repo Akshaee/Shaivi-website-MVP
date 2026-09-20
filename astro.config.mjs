@@ -94,7 +94,14 @@ export default defineConfig({
         "form-action 'self'",
         "base-uri 'self'",
         "object-src 'none'",
-        "upgrade-insecure-requests",
+        // `upgrade-insecure-requests` is deliberately NOT here. It is a transport
+        // concern, so it ships as an HTTP header in vercel.json alongside HSTS.
+        // In the meta CSP it also breaks the cross-browser test run: WebKit
+        // upgrades http://localhost subresources to https:// (Chromium and Firefox
+        // exempt localhost), so every stylesheet, script and image fails the TLS
+        // handshake against the plain-HTTP preview server and the whole suite runs
+        // against an unstyled page. Production is unaffected — it is HTTPS, and
+        // the header applies there.
       ],
     },
   },

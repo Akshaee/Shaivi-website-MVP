@@ -24,12 +24,10 @@ const firstPhone = contact.phones[0]!;
     pictureAttributes={{ class: "absolute inset-0 -z-10" }}
     class="size-full object-cover"
   />
-  <!-- The positioning belongs on <picture>, not <img>: Astro puts `class` on the
-       inner <img> only, so an absolutely positioned image leaves the <picture>
-       an in-flow inline box. WebKit then sizes that box from the image's
-       intrinsic width (2000px) and the page scrolls sideways in Safari at every
-       width from 414px up. Chromium collapses it to zero, which is why this
-       only ever failed on the iphone-webkit project. -->
+  <!-- Astro puts `class` on the inner <img> and leaves <picture> bare, so
+       positioning the image alone would leave the wrapper an in-flow inline box
+       that does not match the band it fills. `pictureAttributes` is Astro's
+       documented way to style the wrapper; the image then fills it. -->
   <!-- Dusk gradient plus a brand-deep scrim. The scrim is what keeps white text
        at 5.4:1 over the gradient's lightest stop even where the photo below is
        at its brightest; scripts/contrast.mjs models this exact stack. -->
